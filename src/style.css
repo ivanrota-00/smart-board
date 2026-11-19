@@ -18,6 +18,7 @@ body {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
+  touch-action: manipulation; /* niente zoom col doppio tocco */
 }
 
 #app {
@@ -26,25 +27,47 @@ body {
   padding: env(safe-area-inset-top) env(safe-area-inset-right)
     env(safe-area-inset-bottom) env(safe-area-inset-left);
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Il futuro campo: nessun gesto del browser (scroll/zoom) sopra di lui */
+/* Campo: alto quanto lo schermo, a sinistra; nessun gesto del browser sopra di lui */
 .campo {
+  display: block;
+  height: 100%;
+  aspect-ratio: 17 / 17.5; /* = VISTA.larghezza / VISTA.altezza */
+  max-width: 75%;
+  flex: none;
   touch-action: none;
 }
 
-.benvenuto {
-  text-align: center;
+/* Striscia a destra: testi e (in futuro) pulsanti */
+.pannello {
+  flex: 1;
+  min-width: 0;
+  padding: 1.5rem;
 }
 
-.benvenuto h1 {
-  font-size: 2.5rem;
+.pannello h1 {
+  font-size: 1.8rem;
   margin: 0 0 0.5rem;
 }
 
-.benvenuto p {
+.pannello p {
   margin: 0;
-  opacity: 0.7;
+  opacity: 0.75;
+  line-height: 1.4;
+}
+
+/* Giocatori e palla */
+.giocatore,
+.palla {
+  cursor: grab;
+}
+
+.giocatore text {
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.in-trascinamento {
+  filter: drop-shadow(0 0.15px 0.25px rgba(0, 0, 0, 0.6));
 }
