@@ -71,3 +71,38 @@ body {
 .in-trascinamento {
   opacity: 0.85; /* si vede che lo stai muovendo */
 }
+
+.pannello .sottotitolo {
+  font-weight: 600;
+  opacity: 1;
+  margin-bottom: 0.5rem;
+}
+
+.pulsanti {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* Pulsanti grandi per il dito (≥ 44 px) */
+.pulsanti button {
+  min-height: 52px;
+  padding: 0 1rem;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 12px;
+  touch-action: manipulation;
+}
+
+.pulsanti button:active {
+  background: #505050;
+}
+
+.pulsanti button:disabled {
+  opacity: 0.45;
+}

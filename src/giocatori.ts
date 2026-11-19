@@ -1,12 +1,11 @@
 // Disegno dei giocatori e della palla + trascinamento col dito (pointer events).
 import { limitaAllaVista, schermoAMetri, type Punto } from './coordinate'
-import type { Giocatore, StatoCampo } from './stato'
+import { PALLA_IN_MANO, type Giocatore, type StatoCampo } from './stato'
 import { creaSvg } from './svg'
 
 const RAGGIO_GIOCATORE = 0.52 // metri: ~48 px di diametro su iPad
 const RAGGIO_PALLA = 0.2
 const RAGGIO_TOCCO_PALLA = 0.42 // area toccabile più grande della palla disegnata
-const PALLA_SPOSTAMENTO = { x: 0.42, y: 0.42 } // palla in basso a destra di chi la ha (come nel PDF)
 const SOLLEVA = 0.9 // metri: quanto si alza l'oggetto sopra il dito mentre lo trascini
 const SOGLIA_MOVIMENTO = 0.2 // metri: sotto questa distanza è un tocco, non un trascinamento
 const DISTANZA_PRESA_PALLA = 1.0 // metri: palla lasciata vicino a un attaccante → passa a lui
@@ -19,7 +18,15 @@ interface Trascinamento {
   sollevato: boolean
 }
 
-export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): void {
+export interface ControlliGiocatori {
+  /** Mostra uno stato (es. un fotogramma dell'animazione). Copia i valori, non tiene il riferimento. */
+  mostra(nuovo: StatoCampo): void
+  /** true = il dito non può trascinare (es. durante l'animazione) */
+  blocca(bloccato: boolean): void
+}
+
+export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): ControlliGiocatori {
+  let bloccato = false
   const strato = creaSvg('g', { class: 'strato-giocatori' })
   const elementi = new Map<string, SVGGElement>()
   const anelliPalla = new Map<string, SVGCircleElement>()
@@ -92,7 +99,7 @@ export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): void {
   function posizionePalla(): Punto {
     const p = stato.palla
     const chi = stato.giocatori.find((g) => g.id === p.inMano)
-    if (chi) return { x: chi.x + PALLA_SPOSTAMENTO.x, y: chi.y + PALLA_SPOSTAMENTO.y }
+    if (chi) return { x: chi.x + PALLA_IN_MANO.x, y: chi.y + PALLA_IN_MANO.y }
     return { x: p.x, y: p.y }
   }
 
@@ -123,7 +130,7 @@ export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): void {
   }
 
   function inizia(e: PointerEvent, t: Pick<Trascinamento, 'tipo' | 'giocatore'>): void {
-    if (giaInMovimento(t)) return
+    if (bloccato || giaInMovimento(t)) return
     e.preventDefault()
     e.stopPropagation()
     const dito = schermoAMetri(svg, e.clientX, e.clientY)
@@ -197,4 +204,29 @@ export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): void {
 
   svg.addEventListener('pointerup', fine)
   svg.addEventListener('pointercancel', fine)
+
+  return {
+    mostra(nuovo) {
+      for (const g of stato.giocatori) {
+        const n = nuovo.giocatori.find((x) => x.id === g.id)
+        if (n) {
+          g.x = n.x
+          g.y = n.y
+        }
+      }
+      stato.palla = { ...nuovo.palla }
+      aggiornaTutto()
+    },
+    blocca(b) {
+      bloccato = b
+      if (b) {
+        // interrompe eventuali trascinamenti in corso
+        for (const t of attivi.values()) {
+          const el = t.tipo === 'palla' ? palla : elementi.get(t.giocatore!.id)
+          el?.classList.remove('in-trascinamento')
+        }
+        attivi.clear()
+      }
+    },
+  }
 }
