@@ -41,6 +41,8 @@ export interface Passo {
   azioni: Azione[]
   /** Se presenti, l'app si ferma e mostra i bottoni (Fase 6). */
   scelte?: Scelta[]
+  /** id del passo successivo (se non ci sono scelte). Se manca, lo schema finisce qui. */
+  prossimo?: string
 }
 
 export interface Schema {

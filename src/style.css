@@ -72,26 +72,69 @@ body {
   opacity: 0.85; /* si vede che lo stai muovendo */
 }
 
-.pannello .sottotitolo {
-  font-weight: 600;
-  opacity: 1;
-  margin-bottom: 0.5rem;
+.pannello {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
 }
 
-.pulsanti {
+.pannello .premessa {
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+.passo .numero {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  margin-bottom: 0.25rem;
+}
+
+.passo h2 {
+  font-size: 1.3rem;
+  margin: 0 0 0.5rem;
+}
+
+.passo p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Comandi in fondo al pannello */
+.comandi {
+  margin-top: auto;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-top: 1.5rem;
+}
+
+.barra {
+  height: 6px;
+  border-radius: 3px;
+  background: #333;
+  overflow: hidden;
+}
+
+.barra-piena {
+  height: 100%;
+  width: 0;
+  background: #e8692c;
+}
+
+.riga {
+  display: flex;
+  gap: 0.75rem;
 }
 
 /* Pulsanti grandi per il dito (≥ 44 px) */
-.pulsanti button {
-  min-height: 52px;
-  padding: 0 1rem;
+.comandi button {
+  flex: 1;
+  min-height: 56px;
+  padding: 0 0.5rem;
   font: inherit;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.5rem;
   color: #fff;
   background: #3a3a3a;
   border: 1px solid #555;
@@ -99,10 +142,30 @@ body {
   touch-action: manipulation;
 }
 
-.pulsanti button:active {
-  background: #505050;
+.comandi button.principale {
+  flex: 1.4;
+  min-height: 72px;
+  font-size: 2rem;
+  background: #e8692c;
+  border-color: #e8692c;
 }
 
-.pulsanti button:disabled {
-  opacity: 0.45;
+.comandi .velocita button,
+.comandi button.largo {
+  min-height: 48px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.comandi .velocita button.attivo {
+  background: #f2f2f2;
+  color: #1a1a1a;
+}
+
+.comandi button:active {
+  filter: brightness(1.2);
+}
+
+.comandi button:disabled {
+  opacity: 0.35;
 }
