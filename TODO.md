@@ -3,13 +3,15 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: provare le scelte A/B sull'iPad
-- [ ] Ivan: confermare B1 (passaggio 1 → 3 sul back door solo nel testo, non animato)
+- [ ] Ivan: dare l'OK al piano della Fase 7
+- [ ] Ivan: dare un'occhiata alla Decisione 2 (fine B1) sull'iPad
 
 ## Fase 6 — Scelte A/B
 - [x] Player: decisione, scegli, ritorno alla decisione (7 test)
 - [x] Bottoni delle scelte nel pannello + domanda
 - [x] Triangolo: Scelta B (B1, B2 in due parti)
+- [x] Provata da Ivan su iPad: tutto ok (19/11/2026)
+- [x] Decisione 2 a fine B1: back door libero / chiuso
 
 ## Fase 5 — Player
 - [x] Logica del player con 9 test (play/pausa, avanti/indietro, velocità, fine schema)

@@ -88,19 +88,33 @@ export const triangolo: Schema = {
       ],
     },
     // --- Scelta B ---
-    // Nel PDF, B1 disegna anche il passaggio 1 → 3 sul back door, ma B2 riparte con la palla all'1:
-    // per non rompere la continuità il passaggio è solo citato nel testo (🟡 da confermare con Ivan).
+    // Nel PDF B1 disegna il passaggio 1 → 3 sul back door, ma B2 riparte con la palla all'1.
+    // Deciso con Ivan: a fine B1 c'è una seconda decisione (back door libero / chiuso).
     {
       id: 'pB1',
       titolo: 'Scelta B — Step B1',
-      testo: '2 passa a 1. 3 gioca back door con 1 (se è libero, 1 gli passa la palla).',
-      prossimo: 'pB2a',
+      testo: '2 passa a 1. 3 gioca back door con 1.',
+      domanda: 'Decisione 2: il 3 è libero sul back door?',
+      scelte: [
+        { etichetta: 'Libero: passa al 3', vaiA: 'pB1L' },
+        { etichetta: 'Chiuso: continua (B2)', vaiA: 'pB2a' },
+      ],
       azioni: [
         { tipo: 'passaggio', da: 'A2', a: 'A1', inizio: 0, durata: 0.8 },
         { tipo: 'taglio', giocatore: 'A3', percorso: [[2.9, 7.6], [4.4, 6.6], [5.7, 3.6]], inizio: 0.7, durata: 1.8 },
         { tipo: 'spostamento', giocatore: 'D3', percorso: [[3.6, 7.0], [5.0, 4.4]], inizio: 0.8, durata: 1.8 },
         { tipo: 'spostamento', giocatore: 'D1', percorso: [[7.3, 7.8]], inizio: 0.4, durata: 0.8 },
         { tipo: 'spostamento', giocatore: 'D2', percorso: [[12.1, 6.0]], inizio: 0.4, durata: 0.8 },
+      ],
+    },
+    {
+      id: 'pB1L',
+      titolo: 'Scelta B — Back door libero',
+      testo: '1 passa al 3 che taglia back door: tiro da sotto.',
+      azioni: [
+        { tipo: 'passaggio', da: 'A1', a: 'A3', inizio: 0, durata: 0.7 },
+        { tipo: 'taglio', giocatore: 'A3', percorso: [[6.4, 2.4]], inizio: 0.6, durata: 0.8 },
+        { tipo: 'spostamento', giocatore: 'D3', percorso: [[5.6, 3.6]], inizio: 0.4, durata: 1.0 },
       ],
     },
     {
