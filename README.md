@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–3 completate, Fase 4 in prova su iPad)
+> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–4 completate)
 
 ---
 
@@ -192,7 +192,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 1 | Setup progetto: cartella, Vite+TS, git, `CLAUDE.md`, PDF di esempio in `docs/esempi/` | `npm run dev` mostra una pagina | ✔️ |
 | 2 | Campo SVG + 10 giocatori + palla, trascinabili | Si muovono con mouse e dito | ✔️ |
 | 3 | Modello dati + motore di animazione (con test) | Un passo si anima da A a B | ✔️ |
-| 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | 🟡 codice pronto, da provare su iPad |
+| 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | ✔️ |
 | 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | ⬜ |
 | 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ⬜ |
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ⬜ |
@@ -291,9 +291,9 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato da Ivan su iPad: l'animazione del passo 1 funziona
   - Percorsi per ora a tratti dritti (curve con le frecce in Fase 4)
 
-- 🟡 **Fase 4 (codice pronto):** percorsi curvi (`src/geometria.ts`), frecce (`src/frecce.ts`), pulsante temporaneo "Prova frecce" (`src/schemi/prova-frecce.ts`)
+- ✔️ **Fase 4 fatta:** percorsi curvi (`src/geometria.ts`), frecce (`src/frecce.ts`), pulsante temporaneo "Prova frecce" (`src/schemi/prova-frecce.ts`)
   - ✅ verificato: 22 test passano; build senza errori; immagini delle frecce controllate (passo 1 + prova frecce)
-  - 🟡 da verificare da Ivan su iPad: leggibilità delle frecce e animazione lungo le curve
+  - ✅ verificato da Ivan su iPad: frecce leggibili, animazione lungo le curve ok
   - Nota: nel passo 1 la punta della freccia dell'1 finisce sotto il 4 (l'1 va dove sta il 4 all'inizio, come da PDF)
 
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
@@ -353,5 +353,4 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Ivan prova "▶ Prova frecce" e "▶ Prova passo 1" sull'iPad.
-2. Chiudere la Fase 4 → Fase 5: player (play/pausa/passi/velocità + testo), solo dopo l'OK.
+1. Fase 5: player (play/pausa/passi/velocità + testo) — piano proposto, in attesa dell'OK.

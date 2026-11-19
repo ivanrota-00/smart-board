@@ -3,12 +3,13 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: provare "▶ Prova frecce" sull'iPad
+- [ ] Ivan: dare l'OK al piano della Fase 5
 
 ## Fase 4 — Frecce e tipi di azione
 - [x] Percorsi curvi (motore + disegno), con test
 - [x] 5 frecce: taglio, passaggio, palleggio, blocco, hand-off
 - [x] Pulsante temporaneo "Prova frecce" (da togliere in Fase 5)
+- [x] Provata da Ivan su iPad: tutto ok (19/11/2026)
 
 ## Fase 3 — Modello dati + motore di animazione
 - [x] Vitest installato, `npm test`
