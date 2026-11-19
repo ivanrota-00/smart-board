@@ -10,6 +10,16 @@ import { triangolo } from './schemi/triangolo'
 import type { Passo, Schema } from './schema'
 import { creaSvg } from './svg'
 
+// App installabile e offline: il service worker si attiva solo nella versione pubblicata
+// (in sviluppo darebbe fastidio salvando copie vecchie dei file).
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {
+      /* senza service worker l'app funziona lo stesso, solo non offline */
+    })
+  })
+}
+
 // Safari su iPad ignora "user-scalable=no": blocchiamo lo zoom con due dita a mano.
 document.addEventListener('gesturestart', (e) => e.preventDefault())
 

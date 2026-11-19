@@ -2,3 +2,6 @@ node_modules
 dist
 .DS_Store
 *.local
+
+# Il PDF di riferimento resta solo sul Mac (repository pubblico)
+docs/esempi/*.pdf
