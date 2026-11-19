@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–3 completate)
+> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–3 completate, Fase 4 in prova su iPad)
 
 ---
 
@@ -192,7 +192,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 1 | Setup progetto: cartella, Vite+TS, git, `CLAUDE.md`, PDF di esempio in `docs/esempi/` | `npm run dev` mostra una pagina | ✔️ |
 | 2 | Campo SVG + 10 giocatori + palla, trascinabili | Si muovono con mouse e dito | ✔️ |
 | 3 | Modello dati + motore di animazione (con test) | Un passo si anima da A a B | ✔️ |
-| 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | ⬜ |
+| 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | 🟡 codice pronto, da provare su iPad |
 | 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | ⬜ |
 | 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ⬜ |
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ⬜ |
@@ -291,6 +291,11 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato da Ivan su iPad: l'animazione del passo 1 funziona
   - Percorsi per ora a tratti dritti (curve con le frecce in Fase 4)
 
+- 🟡 **Fase 4 (codice pronto):** percorsi curvi (`src/geometria.ts`), frecce (`src/frecce.ts`), pulsante temporaneo "Prova frecce" (`src/schemi/prova-frecce.ts`)
+  - ✅ verificato: 22 test passano; build senza errori; immagini delle frecce controllate (passo 1 + prova frecce)
+  - 🟡 da verificare da Ivan su iPad: leggibilità delle frecce e animazione lungo le curve
+  - Nota: nel passo 1 la punta della freccia dell'1 finisce sotto il 4 (l'1 va dove sta il 4 all'inizio, come da PDF)
+
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
 
 ## 11. Decisioni prese
@@ -310,6 +315,9 @@ Non passare alla Fase 2 finché non te lo dico.
 | 19/11/2026 | Campo: si mostra anche ~2 m oltre la metà campo (come nel PDF); area visibile x −1…16, y −1…16,5 m |
 | 19/11/2026 | Nuovo tipo di azione `spostamento`: movimento senza freccia (es. difensori). Tempi delle azioni in secondi |
 | 19/11/2026 | Palla in volo: va dalla mano di chi passa (a inizio passaggio) a quella di chi riceve (all'arrivo), in linea retta. Movimenti con partenza/arrivo morbidi |
+| 19/11/2026 | Frecce: taglio bianca piena, passaggio verde tratteggiata, palleggio blu ondulata, blocco con stanghetta finale (simbolo standard, 🟡 nel PDF non si vede bene), hand-off con due stanghette a metà. Spostamento = nessuna freccia |
+| 19/11/2026 | Percorsi: curva morbida che passa per tutti i punti (Catmull-Rom); il giocatore segue la stessa curva disegnata |
+| 19/11/2026 | Le frecce di un passo si vedono tutte prima di partire; ognuna sparisce (0,4 s) quando la sua azione finisce |
 | 19/11/2026 | Palla: segue chi la ha; trascinata e lasciata entro 1 m da un attaccante passa a lui, altrimenti resta libera |
 
 ### Conseguenze della scelta iPad (🟡 = da verificare su iPad vero)
@@ -334,6 +342,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **19/11/2026 — Sessione 1 (quater):** Fase 4 — percorsi curvi, 5 tipi di freccia, prova frecce. 22 test.
 - **19/11/2026 — Sessione 1 (ter):** Fase 3 — modello dati, motore di animazione + 14 test, prova animata del passo 1 del Triangolo.
 - **19/11/2026 — Sessione 1 (bis):** Fase 2 — campo FIBA in SVG, giocatori e palla trascinabili (multi-tocco). Provata da Ivan su iPad: tutto funziona.
 - **19/11/2026 — Sessione 1:** Fase 1 completata (Vite + TS, git, CLAUDE.md, TODO.md, pagina base touch-first: `100dvh`, aree sicure, niente scroll/zoom).
@@ -344,4 +353,5 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Fase 4: frecce e tipi di azione — piano proposto, in attesa dell'OK.
+1. Ivan prova "▶ Prova frecce" e "▶ Prova passo 1" sull'iPad.
+2. Chiudere la Fase 4 → Fase 5: player (play/pausa/passi/velocità + testo), solo dopo l'OK.
