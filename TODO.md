@@ -3,13 +3,14 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: provare la Libreria sull'iPad (vedi istruzioni in chat)
+- [ ] Ivan: decidere come usare l'app in palestra (hotspot o pubblicazione + PWA)
 
 ## Fase 7 — Libreria + salvataggio + import/export
 - [x] Salvataggio locale (schemi, ultimo schema, velocità) con test
 - [x] Controllo dei file importati con messaggi chiari, con test
 - [x] Schermata Libreria: apri, importa, esporta, elimina, backup
 - [x] File di prova `docs/esempi/dai-e-vai.json`
+- [x] Provata da Ivan su iPad: tutto ok (20/11/2026)
 - [ ] Ivan: dare un'occhiata alla Decisione 2 (fine B1) sull'iPad
 
 ## Fase 6 — Scelte A/B

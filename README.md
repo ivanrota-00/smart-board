@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 20/11/2026 — Sessione 1 (Fasi 1–6 completate, Fase 7 in prova su iPad)
+> Ultimo aggiornamento: 20/11/2026 — Sessione 1 (Fasi 1–7 completate)
 
 ---
 
@@ -195,7 +195,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | ✔️ |
 | 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | ✔️ |
 | 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ✔️ |
-| 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | 🟡 codice pronto, da provare su iPad |
+| 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ✔️ |
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ⬜ |
 | 9 | Editor (v0.2) | Crei uno schema nuovo da zero | ⬜ |
 | 10 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
@@ -306,9 +306,10 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato da Ivan su iPad: bottoni delle scelte e ritorno alla decisione
   - Aggiunta (scelta di Ivan) la **Decisione 2** a fine B1: "Libero: passa al 3" (passaggio back door) / "Chiuso: continua (B2)". ✅ tutti i percorsi verificati col player (non ancora visti su iPad)
 
-- 🟡 **Fase 7 (codice pronto):** pulsante "📚 Libreria" (elenco schemi, apri, esporta, elimina), "Importa file JSON", "Esporta tutto (backup)" con "Ultimo backup: …". Salvataggio in `localStorage` (`src/archivio.ts`): schemi importati, ultimo schema aperto, velocità. Controllo dei file importati con messaggi in italiano (`src/valida.ts`). File di prova: `docs/esempi/dai-e-vai.json`
+- ✔️ **Fase 7 fatta:** pulsante "📚 Libreria" (elenco schemi, apri, esporta, elimina), "Importa file JSON", "Esporta tutto (backup)" con "Ultimo backup: …". Salvataggio in `localStorage` (`src/archivio.ts`): schemi importati, ultimo schema aperto, velocità. Controllo dei file importati con messaggi in italiano (`src/valida.ts`). File di prova: `docs/esempi/dai-e-vai.json`
   - ✅ verificato: 54 test passano (17 nuovi: controllo file, salvataggio, file di esempio); build senza errori
-  - 🟡 NON verificato (non posso aprire un browser): la schermata Libreria, l'import dall'app File, l'export su iPad (menu Condividi o download), il ricaricamento della pagina
+  - ✅ verificato da Ivan su iPad: Libreria, import (file passato via iCloud Drive), apertura, ricarica, export, backup, elimina
+  - Nota: in Safari un `.json` aperto da link si vede come testo e Condividi non offre "Salva in File" → per portare file sull'iPad usare iCloud Drive o AirDrop
 
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
 
@@ -380,5 +381,4 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Ivan prova la Libreria sull'iPad (import di `dai-e-vai.json`, ricarica, export, backup).
-2. Chiudere la Fase 7 → **Fase 8: test con la squadra** in palestra (niente codice: feedback scritto).
+1. **Fase 8: test con la squadra.** Problema da risolvere prima: in palestra non c'è il Mac/Wi-Fi di casa → decidere come far arrivare l'app all'iPad (hotspot del telefono oppure pubblicazione https + PWA offline, anticipando parte della Fase 11).
