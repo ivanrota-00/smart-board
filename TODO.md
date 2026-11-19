@@ -3,7 +3,15 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: decidere come usare l'app in palestra (hotspot o pubblicazione + PWA)
+- [ ] Ivan: installare l'app sull'iPad e provarla in modalità aereo
+- [ ] Ivan: attivare l'autenticazione a due fattori su GitHub (se non c'è già)
+- [ ] Ivan: Fase 8 — test in palestra e feedback scritto
+
+## Pubblicazione + PWA
+- [x] Manifest, icone, service worker per l'offline
+- [x] Repository pubblico su GitHub + GitHub Pages con pubblicazione automatica
+- [x] Controllo di sicurezza prima di pubblicare
+- [ ] Aggiornare le versioni delle azioni GitHub (avviso: Node 20 deprecato) — non urgente
 
 ## Fase 7 — Libreria + salvataggio + import/export
 - [x] Salvataggio locale (schemi, ultimo schema, velocità) con test

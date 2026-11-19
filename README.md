@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 20/11/2026 — Sessione 1 (Fasi 1–7 completate)
+> Ultimo aggiornamento: 20/11/2026 — Sessione 1 (Fasi 1–7 completate + app pubblicata e installabile)
 
 ---
 
@@ -199,7 +199,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ⬜ |
 | 9 | Editor (v0.2) | Crei uno schema nuovo da zero | ⬜ |
 | 10 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
-| 11 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | ⬜ |
+| 11 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | 🟡 parte PWA anticipata: pubblicata, da installare e provare offline |
 
 **Stima indicativa 🟡:** fasi 1–7 in circa 4–8 sessioni di lavoro; l'editor e la modalità dal vivo sono la parte più lunga. È una stima, non un impegno.
 
@@ -311,6 +311,14 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato da Ivan su iPad: Libreria, import (file passato via iCloud Drive), apertura, ricarica, export, backup, elimina
   - Nota: in Safari un `.json` aperto da link si vede come testo e Condividi non offre "Salva in File" → per portare file sull'iPad usare iCloud Drive o AirDrop
 
+- 🟡 **Pubblicazione + PWA (anticipo della Fase 11, per poter fare la Fase 8 in palestra):**
+  - Sito: **https://ivanrota-00.github.io/smart-board/** · Codice: https://github.com/ivanrota-00/smart-board (pubblico)
+  - Ogni `git push` sul ramo `main` → GitHub esegue i test, costruisce e pubblica da solo (`.github/workflows/pubblica.yml`)
+  - Installabile: manifest + icone (`public/`), service worker fatto a mano (`public/sw.js`) che salva l'app per l'uso offline
+  - ✅ verificato: pubblicazione riuscita (test passati su GitHub); sito, file dell'app, manifest, service worker e icone rispondono; http → https
+  - 🟡 da verificare da Ivan: installazione sull'iPad e uso in modalità aereo
+  - Controllo di sicurezza fatto prima di pubblicare: nessun segreto o dato personale nei file; PDF tolto da tutta la storia; commit con email anonima GitHub
+
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
 
 ## 11. Decisioni prese
@@ -343,6 +351,10 @@ Non passare alla Fase 2 finché non te lo dico.
 | 20/11/2026 | Salvataggio in `localStorage` (schemi piccoli, basta e avanza). Gli schemi predefiniti (Triangolo) stanno nel codice e non si eliminano |
 | 20/11/2026 | Import: accetta uno schema singolo o un file di backup; uno schema con lo stesso id di un predefinito ma diverso diventa "(importato)"; se esiste già uno schema tuo con quell'id chiede se sostituirlo |
 | 20/11/2026 | Export: prova il menu Condividi di iPad (serve https → 🟡 dal server di sviluppo probabilmente scarica il file normalmente) |
+| 20/11/2026 | Pubblicazione su GitHub Pages (repository pubblico, gratis). Il PDF di riferimento resta solo sul Mac (escluso da git e dalla storia) |
+| 20/11/2026 | Commit firmati con l'email anonima di GitHub (`…@users.noreply.github.com`) |
+| 20/11/2026 | Service worker scritto a mano (niente plugin): pagina "prima la rete", file dell'app "prima la copia salvata" |
+| 20/11/2026 | GitHub CLI (`gh`) installato in `~/.local/bin` (binario ufficiale, checksum verificato) per login e pubblicazione |
 | 19/11/2026 | Palla: segue chi la ha; trascinata e lasciata entro 1 m da un attaccante passa a lui, altrimenti resta libera |
 
 ### Conseguenze della scelta iPad (🟡 = da verificare su iPad vero)
@@ -367,6 +379,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **20/11/2026 — Sessione 1 (octies):** app installabile e offline (PWA), pubblicata su GitHub Pages con aggiornamento automatico; controllo di sicurezza; storia git ripulita (email anonima, niente PDF).
 - **20/11/2026 — Sessione 1 (septies):** Fase 7 — libreria, salvataggio locale, import/export JSON con controllo. 54 test.
 - **19/11/2026 — Sessione 1 (sexies):** Fase 6 — scelte A/B con bottoni, Scelta B trascritta (B1, B2a, B2b). Triangolo completo. 37 test. Poi aggiunta la Decisione 2 a fine B1.
 - **19/11/2026 — Sessione 1 (quinquies):** Fase 5 — player con comandi, velocità e testi; Scelta A del Triangolo trascritta; tolte le prove temporanee. 31 test.
@@ -381,4 +394,6 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. **Fase 8: test con la squadra.** Problema da risolvere prima: in palestra non c'è il Mac/Wi-Fi di casa → decidere come far arrivare l'app all'iPad (hotspot del telefono oppure pubblicazione https + PWA offline, anticipando parte della Fase 11).
+1. Ivan installa l'app sull'iPad (Safari → Condividi → "Aggiungi alla schermata Home") e la prova in modalità aereo.
+2. **Fase 8: test con la squadra** in palestra → feedback scritto (cosa capiscono i giocatori, cosa manca).
+3. Dopo il feedback: Fase 9 (editor).
