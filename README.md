@@ -279,7 +279,7 @@ Non passare alla Fase 2 finché non te lo dico.
 - ✅ Stack e modello dati proposti (bozza, **non ancora approvati da Ivan**)
 - ✔️ **Fase 1 fatta:** cartella, git, Vite 8 + TypeScript 7, `CLAUDE.md`, `TODO.md`, pagina base
   - ✅ verificato: `npm run build` senza errori; `npm run dev` risponde e serve la pagina "Smart Board — Fase 1 OK"
-  - 🟡 non verificato: aspetto nel browser e su iPad (`npm run dev -- --host`)
+  - ✅ verificato da Ivan: la pagina si vede sul Mac e sull'iPad (Safari, via `npm run dev -- --host`)
 - ⬜ Fase 2 in attesa dell'OK di Ivan
 
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
@@ -329,6 +329,5 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Provare la pagina sull'iPad (`npm run dev -- --host`, stessa Wi-Fi).
-2. Decidere per la Fase 2: solo mezzo campo (y 0–14) o anche un pezzo oltre la metà campo come nei disegni del PDF.
-3. Dare l'OK alla Fase 2: campo SVG + 10 giocatori + palla trascinabili.
+1. Decidere per la Fase 2: solo mezzo campo (y 0–14) o anche un pezzo oltre la metà campo come nei disegni del PDF.
+2. Dare l'OK alla Fase 2: campo SVG + 10 giocatori + palla trascinabili.

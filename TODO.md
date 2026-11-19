@@ -3,7 +3,6 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: aprire la pagina sull'iPad con `npm run dev -- --host` e confermare che si vede
 - [ ] Ivan: dare l'OK per la Fase 2
 
 ## Fase 2 — Campo SVG + giocatori trascinabili (in attesa di OK)
@@ -15,4 +14,5 @@ Compiti pratici. Il piano completo è nel README (§7).
 - [ ] Freccia "blocco" con tacca: nel PDF a bassa risoluzione non si vede bene (Fase 4)
 
 ## Fatto
+- [x] Pagina verificata da Ivan su Mac e iPad (19/11/2026)
 - [x] Fase 1: setup Vite + TypeScript, git, CLAUDE.md, pagina base (19/11/2026)
