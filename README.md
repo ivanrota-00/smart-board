@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–5 completate)
+> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–5 completate, Fase 6 in prova su iPad)
 
 ---
 
@@ -194,7 +194,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 3 | Modello dati + motore di animazione (con test) | Un passo si anima da A a B | ✔️ |
 | 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | ✔️ |
 | 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | ✔️ |
-| 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ⬜ |
+| 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | 🟡 codice pronto, da provare su iPad |
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ⬜ |
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ⬜ |
 | 9 | Editor (v0.2) | Crei uno schema nuovo da zero | ⬜ |
@@ -301,6 +301,11 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato da Ivan su iPad: comandi, testi e simboli ok
   - Trascinamento dei giocatori disattivato nel player (torna con l'editor, Fase 9)
 
+- 🟡 **Fase 6 (codice pronto):** alla fine della Situazione iniziale il player si ferma sulla Decisione 1 con domanda e bottoni "A: passa al 5" / "B: passa al 1"; ⏮ dal primo passo di un ramo torna alla decisione. Triangolo completo: A1–A3, B1, B2 (in due parti)
+  - ✅ verificato: 37 test passano (7 nuovi sulle scelte); build senza errori; immagini dei passi B controllate rispetto al PDF
+  - 🟡 da verificare da Ivan su iPad: bottoni delle scelte, ritorno alla decisione
+  - 🟡 da confermare con Ivan: in B1 il passaggio 1 → 3 sul back door non è animato (solo nel testo), perché nel PDF B2 riparte con la palla all'1
+
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
 
 ## 11. Decisioni prese
@@ -327,7 +332,8 @@ Non passare alla Fase 2 finché non te lo dico.
 | 19/11/2026 | Play riproduce UN passo e si ferma sull'inizio del passo dopo (l'allenatore spiega, poi ▶). Play a fine schema ricomincia |
 | 19/11/2026 | Nel player il trascinamento è disattivato |
 | 19/11/2026 | Difensori: ognuno resta sul suo uomo (X3 sul 3, ecc.). Nel PDF le etichette X2/X3 si scambiano tra le pagine; posizioni 🟡 approssimate |
-| 19/11/2026 | Temporaneo (fino alla Fase 6): a un passo con scelte il player segue la prima (A) |
+| 19/11/2026 | Scelte: a fine passo il player si ferma sulla decisione (▶ spento) finché non si tocca A o B; ⏮ dal primo passo del ramo torna alla decisione. Nuovo campo facoltativo `domanda` |
+| 19/11/2026 | Step B2 del PDF diviso in due passi (due disegni nel PDF) |
 | 19/11/2026 | Palla: segue chi la ha; trascinata e lasciata entro 1 m da un attaccante passa a lui, altrimenti resta libera |
 
 ### Conseguenze della scelta iPad (🟡 = da verificare su iPad vero)
@@ -352,6 +358,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **19/11/2026 — Sessione 1 (sexies):** Fase 6 — scelte A/B con bottoni, Scelta B trascritta (B1, B2a, B2b). Triangolo completo. 37 test.
 - **19/11/2026 — Sessione 1 (quinquies):** Fase 5 — player con comandi, velocità e testi; Scelta A del Triangolo trascritta; tolte le prove temporanee. 31 test.
 - **19/11/2026 — Sessione 1 (quater):** Fase 4 — percorsi curvi, 5 tipi di freccia, prova frecce. 22 test.
 - **19/11/2026 — Sessione 1 (ter):** Fase 3 — modello dati, motore di animazione + 14 test, prova animata del passo 1 del Triangolo.
@@ -364,4 +371,5 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Fase 6: scelte A/B con bottoni + Scelta B — piano proposto, in attesa dell'OK.
+1. Ivan prova le scelte A/B sull'iPad e conferma la scelta su B1 (passaggio back door solo nel testo).
+2. Chiudere la Fase 6 → Fase 7: libreria + salvataggio + import/export JSON, solo dopo l'OK.
