@@ -39,8 +39,10 @@ export interface Passo {
   titolo: string
   testo: string
   azioni: Azione[]
-  /** Se presenti, l'app si ferma e mostra i bottoni (Fase 6). */
+  /** Se presenti, a fine passo l'app si ferma e mostra i bottoni. */
   scelte?: Scelta[]
+  /** Testo della decisione, mostrato sopra i bottoni delle scelte. */
+  domanda?: string
   /** id del passo successivo (se non ci sono scelte). Se manca, lo schema finisce qui. */
   prossimo?: string
 }

@@ -41,6 +41,10 @@ pannello.innerHTML = `
     <h2 id="titolo"></h2>
     <p id="testo"></p>
   </div>
+  <div class="decisione" id="decisione" hidden>
+    <p id="domanda"></p>
+    <div class="bottoni-scelta" id="bottoni-scelta"></div>
+  </div>
   <div class="comandi">
     <div class="barra"><div class="barra-piena" id="barra"></div></div>
     <div class="riga">
@@ -67,6 +71,9 @@ const el = {
   avanti: $<HTMLButtonElement>('avanti'),
   ricomincia: $<HTMLButtonElement>('ricomincia'),
   velocita: $('velocita'),
+  decisione: $('decisione'),
+  domanda: $('domanda'),
+  bottoniScelta: $('bottoni-scelta'),
 }
 
 el.nome.textContent = schema.nome
@@ -94,10 +101,30 @@ function disegna(): void {
     passoMostrato = player.passo
     inizioMostrato = player.statoInizioPasso
     frecce.mostraPasso(player.statoInizioPasso, player.passo)
-    el.numero.textContent = `Passo ${player.numero} di ${player.totale}`
+    const { totale, poiScelta } = player.percorso
+    el.numero.textContent =
+      totale === player.numero && poiScelta
+        ? `Passo ${player.numero} · poi scelta`
+        : `Passo ${player.numero} di ${totale}${poiScelta ? ' · poi scelta' : ''}`
     el.titolo.textContent = player.passo.titolo
     el.testo.textContent = player.passo.testo
+
+    // Bottoni delle scelte (preparati qui, mostrati solo alla decisione)
+    el.domanda.textContent = player.passo.domanda ?? 'Scegli come continuare:'
+    el.bottoniScelta.replaceChildren(
+      ...(player.passo.scelte ?? []).map((sc, i) => {
+        const b = document.createElement('button')
+        b.type = 'button'
+        b.textContent = sc.etichetta
+        b.addEventListener('click', () => {
+          player.scegli(i)
+          disegna()
+        })
+        return b
+      }),
+    )
   }
+  el.decisione.hidden = !player.inDecisione
   frecce.aggiorna(player.t)
   giocatori.mostra(player.statoCampo())
 
@@ -106,7 +133,8 @@ function disegna(): void {
   el.play.textContent = (player.inRiproduzione ? '⏸' : '▶') + '\uFE0E' // simbolo, non emoji
   el.play.setAttribute('aria-label', player.inRiproduzione ? 'Pausa' : 'Play')
   el.indietro.disabled = player.numero === 1 && player.t === 0
-  el.avanti.disabled = player.finito
+  el.avanti.disabled = player.finito || player.inDecisione
+  el.play.disabled = player.inDecisione
   for (const { v, b } of bottoniVelocita) b.classList.toggle('attivo', v === player.velocita)
 }
 

@@ -1,7 +1,9 @@
 // Logica del player (senza grafica, testabile): quale passo, a che secondo, velocità.
-// Regole scelte con Ivan (Fase 5):
+// Regole scelte con Ivan:
 // - Play riproduce UN passo; a fine passo ci si ferma sull'inizio del passo dopo (frecce e testo nuovi).
-// - Il passo dopo è `prossimo`. Con le `scelte` (Fase 6) per ora si prende la prima (temporaneo).
+// - Il passo dopo è `prossimo`.
+// - Un passo con `scelte`: a fine passo ci si ferma lì (decisione) finché non si sceglie.
+// - ⏮ dal primo passo di un ramo riporta alla decisione.
 import { durataPasso, statoAlTempo, statoDaSchema, statoFinePasso } from './motore'
 import type { Passo, Schema } from './schema'
 import type { StatoCampo } from './stato'
@@ -32,22 +34,32 @@ export class Player {
     return this.storia.length
   }
 
-  /** Passi totali lungo il percorso attuale (fatti + quello corrente + quelli che seguono). */
-  get totale(): number {
+  /**
+   * Passi lungo il percorso attuale (fatti + corrente + quelli che seguono fino alla fine
+   * o fino alla prossima decisione). `poiScelta` = dopo l'ultimo c'è una decisione.
+   */
+  get percorso(): { totale: number; poiScelta: boolean } {
     let n = this.storia.length
     const visti = new Set(this.storia.map((p) => p.id))
-    let p = this.prossimoDi(this.passo)
-    while (p && !visti.has(p.id)) {
-      visti.add(p.id)
+    let p: Passo | undefined = this.passo
+    while (p && !p.scelte?.length) {
+      const dopo = this.prossimoDi(p)
+      if (!dopo || visti.has(dopo.id)) break
+      visti.add(dopo.id)
       n++
-      p = this.prossimoDi(p)
+      p = dopo
     }
-    return n
+    return { totale: n, poiScelta: !!p?.scelte?.length }
   }
 
-  /** true quando si è alla fine dell'ultimo passo. */
+  /** true quando il passo corrente è finito e bisogna scegliere. */
+  get inDecisione(): boolean {
+    return !!this.passo.scelte?.length && this.t >= this.durata
+  }
+
+  /** true quando si è alla fine dell'ultimo passo (nessun seguito, nessuna scelta). */
   get finito(): boolean {
-    return !this.prossimoDi(this.passo) && this.t >= this.durata
+    return !this.passo.scelte?.length && !this.prossimoDi(this.passo) && this.t >= this.durata
   }
 
   get statoInizioPasso(): StatoCampo {
@@ -60,8 +72,11 @@ export class Player {
   }
 
   prossimoDi(passo: Passo): Passo | undefined {
-    const id = passo.prossimo ?? passo.scelte?.[0]?.vaiA
-    return id ? this.schema.passi.find((p) => p.id === id) : undefined
+    return passo.prossimo ? this.trova(passo.prossimo) : undefined
+  }
+
+  private trova(id: string): Passo | undefined {
+    return this.schema.passi.find((p) => p.id === id)
   }
 
   ricomincia(): void {
@@ -72,8 +87,19 @@ export class Player {
   }
 
   play(): void {
+    if (this.inDecisione) return // prima bisogna scegliere
     if (this.finito) this.ricomincia()
     this.inRiproduzione = true
+  }
+
+  /** Sceglie un'opzione alla decisione: si va all'inizio del passo di quel ramo. */
+  scegli(indice: number): void {
+    const scelta = this.passo.scelte?.[indice]
+    const p = scelta && this.trova(scelta.vaiA)
+    if (!p) return
+    this.inRiproduzione = false
+    this.t = this.durata
+    this.entraIn(p)
   }
 
   pausa(): void {
@@ -87,11 +113,11 @@ export class Player {
     if (this.t >= this.durata) {
       this.t = this.durata
       this.inRiproduzione = false
-      this.vaiAlProssimo()
+      this.vaiAlProssimo() // se ci sono scelte resta qui, in decisione
     }
   }
 
-  /** ⏭ Salta all'inizio del passo dopo (se c'è), altrimenti alla fine di questo. */
+  /** ⏭ Salta all'inizio del passo dopo (se c'è), altrimenti alla fine di questo (o alla decisione). */
   avanti(): void {
     this.inRiproduzione = false
     if (!this.vaiAlProssimo()) this.t = this.durata
@@ -105,16 +131,21 @@ export class Player {
     } else if (this.storia.length > 1) {
       this.storia.pop()
       this.inizi.pop()
-      this.t = 0
+      // se il passo prima aveva le scelte, si torna alla decisione (fine di quel passo)
+      this.t = this.passo.scelte?.length ? this.durata : 0
     }
   }
 
   private vaiAlProssimo(): boolean {
     const p = this.prossimoDi(this.passo)
     if (!p) return false
+    this.entraIn(p)
+    return true
+  }
+
+  private entraIn(p: Passo): void {
     this.inizi.push(statoFinePasso(this.statoInizioPasso, this.passo))
     this.storia.push(p)
     this.t = 0
-    return true
   }
 }

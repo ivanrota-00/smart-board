@@ -1,6 +1,6 @@
 // Schema "Triangolo" dal PDF di esempio (docs/esempi/Triangolo.pdf).
 // Posizioni misurate sulle immagini del PDF e arrotondate (🟡 approssimate).
-// Fase 5: situazione iniziale + Scelta A (Step 1–3). La Scelta B arriva con la Fase 6.
+// Situazione iniziale → Decisione 1 → Scelta A (Step 1–3) oppure Scelta B (B1, B2 in due parti).
 import { VERSIONE_SCHEMA, type Schema } from '../schema'
 
 export const triangolo: Schema = {
@@ -38,6 +38,7 @@ export const triangolo: Schema = {
         { tipo: 'taglio', giocatore: 'A3', percorso: [[1.0, 3.8], [1.05, 6.4]], inizio: 1.2, durata: 1.4 },
         { tipo: 'spostamento', giocatore: 'D3', percorso: [[2.6, 6.4]], inizio: 1.3, durata: 1.4 },
       ],
+      domanda: 'Decisione 1: scegliere se passare la palla al 5 oppure riportarla verso 1.',
       scelte: [
         { etichetta: 'A: passa al 5', vaiA: 'pA1' },
         { etichetta: 'B: passa al 1', vaiA: 'pB1' },
@@ -84,6 +85,51 @@ export const triangolo: Schema = {
         { tipo: 'spostamento', giocatore: 'D4', percorso: [[2.6, 4.4]], inizio: 0.6, durata: 1.4 },
         { tipo: 'taglio', giocatore: 'A2', percorso: [[5.2, 6.7], [9.0, 3.4]], inizio: 1.0, durata: 1.8 },
         { tipo: 'spostamento', giocatore: 'D2', percorso: [[7.6, 5.0]], inizio: 1.1, durata: 1.8 },
+      ],
+    },
+    // --- Scelta B ---
+    // Nel PDF, B1 disegna anche il passaggio 1 → 3 sul back door, ma B2 riparte con la palla all'1:
+    // per non rompere la continuità il passaggio è solo citato nel testo (🟡 da confermare con Ivan).
+    {
+      id: 'pB1',
+      titolo: 'Scelta B — Step B1',
+      testo: '2 passa a 1. 3 gioca back door con 1 (se è libero, 1 gli passa la palla).',
+      prossimo: 'pB2a',
+      azioni: [
+        { tipo: 'passaggio', da: 'A2', a: 'A1', inizio: 0, durata: 0.8 },
+        { tipo: 'taglio', giocatore: 'A3', percorso: [[2.9, 7.6], [4.4, 6.6], [5.7, 3.6]], inizio: 0.7, durata: 1.8 },
+        { tipo: 'spostamento', giocatore: 'D3', percorso: [[3.6, 7.0], [5.0, 4.4]], inizio: 0.8, durata: 1.8 },
+        { tipo: 'spostamento', giocatore: 'D1', percorso: [[7.3, 7.8]], inizio: 0.4, durata: 0.8 },
+        { tipo: 'spostamento', giocatore: 'D2', percorso: [[12.1, 6.0]], inizio: 0.4, durata: 0.8 },
+      ],
+    },
+    {
+      id: 'pB2a',
+      titolo: 'Scelta B — Step B2 (1ª parte)',
+      testo: '1 si allarga in palleggio mentre 3 si sposta in angolo. 2 e 5 si preparano per lo stagger.',
+      prossimo: 'pB2b',
+      azioni: [
+        { tipo: 'palleggio', giocatore: 'A1', percorso: [[5.6, 9.4], [3.6, 8.7]], inizio: 0, durata: 1.6 },
+        { tipo: 'spostamento', giocatore: 'D1', percorso: [[4.6, 7.6]], inizio: 0.1, durata: 1.6 },
+        { tipo: 'taglio', giocatore: 'A3', percorso: [[3.0, 2.5], [0.9, 1.0]], inizio: 0, durata: 1.8 },
+        { tipo: 'spostamento', giocatore: 'D3', percorso: [[2.5, 2.1]], inizio: 0.2, durata: 1.8 },
+        { tipo: 'blocco', giocatore: 'A5', percorso: [[10.4, 2.3]], inizio: 0.6, durata: 1.0 },
+        { tipo: 'spostamento', giocatore: 'D5', percorso: [[9.5, 3.6]], inizio: 0.6, durata: 1.0 },
+        { tipo: 'blocco', giocatore: 'A2', percorso: [[10.5, 4.8]], inizio: 0.6, durata: 1.2 },
+        { tipo: 'spostamento', giocatore: 'D2', percorso: [[11.3, 5.8]], inizio: 0.7, durata: 1.2 },
+        { tipo: 'spostamento', giocatore: 'D4', percorso: [[11.9, 2.2]], inizio: 0.6, durata: 1.0 },
+      ],
+    },
+    {
+      id: 'pB2b',
+      titolo: 'Scelta B — Step B2 (2ª parte)',
+      testo: '2 e 5 montano lo stagger per il 4, che esce verso la palla e riceve da 1. 2 si allarga per un tiro.',
+      azioni: [
+        { tipo: 'taglio', giocatore: 'A4', percorso: [[11.0, 1.1], [10.9, 4.0], [9.0, 5.3], [7.1, 3.7]], inizio: 0, durata: 2.6 },
+        { tipo: 'spostamento', giocatore: 'D4', percorso: [[11.6, 1.7], [10.0, 4.7], [7.9, 4.5]], inizio: 0.2, durata: 2.6 },
+        { tipo: 'passaggio', da: 'A1', a: 'A4', inizio: 2.4, durata: 0.7 },
+        { tipo: 'taglio', giocatore: 'A2', percorso: [[12.6, 7.1]], inizio: 1.8, durata: 1.2 },
+        { tipo: 'spostamento', giocatore: 'D2', percorso: [[11.9, 6.4]], inizio: 1.9, durata: 1.2 },
       ],
     },
   ],

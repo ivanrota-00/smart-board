@@ -39,7 +39,7 @@ describe('player', () => {
     expect(p.t).toBe(0)
     expect(p.inRiproduzione).toBe(false)
     expect(p.numero).toBe(1)
-    expect(p.totale).toBe(3)
+    expect(p.percorso).toEqual({ totale: 3, poiScelta: false })
   })
 
   it('senza play il tempo non passa', () => {
@@ -113,16 +113,90 @@ describe('player', () => {
     expect(p.numero).toBe(1)
   })
 
-  it('con le scelte (per ora) segue la prima', () => {
-    const conScelte: Schema = {
-      ...schema,
-      passi: [
-        { ...schema.passi[0], prossimo: undefined, scelte: [{ etichetta: 'A', vaiA: 'p3' }, { etichetta: 'B', vaiA: 'p2' }] },
-        ...schema.passi.slice(1),
-      ],
-    }
+})
+
+describe('scelte A/B', () => {
+  // p0 → decisione → A (pA1 → pA2) oppure B (pB1)
+  const base = schema.passi[0]
+  const conScelte: Schema = {
+    ...schema,
+    passi: [
+      {
+        ...base, id: 'p0', prossimo: undefined, domanda: 'A o B?',
+        scelte: [{ etichetta: 'A', vaiA: 'pA1' }, { etichetta: 'B', vaiA: 'pB1' }],
+      },
+      { ...schema.passi[1], id: 'pA1', prossimo: 'pA2' },
+      { ...schema.passi[2], id: 'pA2' },
+      {
+        id: 'pB1', titolo: 'B', testo: '',
+        azioni: [{ tipo: 'taglio', giocatore: 'A1', percorso: [[5, 0]], inizio: 0, durata: 1 }],
+      },
+    ],
+  }
+
+  it('prima della scelta: "passo 1, poi scelta"', () => {
+    const p = new Player(conScelte)
+    expect(p.percorso).toEqual({ totale: 1, poiScelta: true })
+    expect(p.inDecisione).toBe(false)
+  })
+
+  it('a fine passo si ferma alla decisione; play non fa niente', () => {
+    const p = new Player(conScelte)
+    p.play()
+    p.avanza(5)
+    expect(p.passo.id).toBe('p0')
+    expect(p.inDecisione).toBe(true)
+    expect(p.finito).toBe(false)
+    p.play()
+    expect(p.inRiproduzione).toBe(false)
+  })
+
+  it('⏭ porta alla decisione, non sceglie da solo', () => {
     const p = new Player(conScelte)
     p.avanti()
-    expect(p.passo.id).toBe('p3')
+    expect(p.passo.id).toBe('p0')
+    expect(p.inDecisione).toBe(true)
+  })
+
+  it('scegliere A porta all’inizio del ramo A, partendo dalla fine del passo prima', () => {
+    const p = new Player(conScelte)
+    p.avanti()
+    p.scegli(0)
+    expect(p.passo.id).toBe('pA1')
+    expect(p.t).toBe(0)
+    expect(posA1(p)).toEqual({ x: 2, y: 0 })
+    expect(p.percorso).toEqual({ totale: 3, poiScelta: false })
+  })
+
+  it('scegliere B porta al ramo B', () => {
+    const p = new Player(conScelte)
+    p.avanti()
+    p.scegli(1)
+    expect(p.passo.id).toBe('pB1')
+    expect(p.percorso).toEqual({ totale: 2, poiScelta: false })
+    p.avanti()
+    expect(p.finito).toBe(true)
+  })
+
+  it('⏮ dal primo passo del ramo torna alla decisione, poi all’inizio', () => {
+    const p = new Player(conScelte)
+    p.avanti()
+    p.scegli(1)
+    p.indietro()
+    expect(p.passo.id).toBe('p0')
+    expect(p.inDecisione).toBe(true)
+    p.indietro()
+    expect(p.passo.id).toBe('p0')
+    expect(p.t).toBe(0)
+  })
+
+  it('dopo essere tornati alla decisione si può scegliere l’altro ramo', () => {
+    const p = new Player(conScelte)
+    p.avanti()
+    p.scegli(0)
+    p.indietro()
+    p.scegli(1)
+    expect(p.passo.id).toBe('pB1')
+    expect(p.numero).toBe(2)
   })
 })
