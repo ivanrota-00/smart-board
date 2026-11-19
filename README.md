@@ -199,7 +199,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ⬜ |
 | 9 | Editor (v0.2) | Crei uno schema nuovo da zero | ⬜ |
 | 10 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
-| 11 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | 🟡 parte PWA anticipata: pubblicata, da installare e provare offline |
+| 11 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | ✔️ parte PWA (installazione + offline); resta l'eventuale condivisione v0.4 |
 
 **Stima indicativa 🟡:** fasi 1–7 in circa 4–8 sessioni di lavoro; l'editor e la modalità dal vivo sono la parte più lunga. È una stima, non un impegno.
 
@@ -311,12 +311,13 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato da Ivan su iPad: Libreria, import (file passato via iCloud Drive), apertura, ricarica, export, backup, elimina
   - Nota: in Safari un `.json` aperto da link si vede come testo e Condividi non offre "Salva in File" → per portare file sull'iPad usare iCloud Drive o AirDrop
 
-- 🟡 **Pubblicazione + PWA (anticipo della Fase 11, per poter fare la Fase 8 in palestra):**
+- ✔️ **Pubblicazione + PWA (anticipo della Fase 11, per poter fare la Fase 8 in palestra):**
   - Sito: **https://ivanrota-00.github.io/smart-board/** · Codice: https://github.com/ivanrota-00/smart-board (pubblico)
   - Ogni `git push` sul ramo `main` → GitHub esegue i test, costruisce e pubblica da solo (`.github/workflows/pubblica.yml`)
   - Installabile: manifest + icone (`public/`), service worker fatto a mano (`public/sw.js`) che salva l'app per l'uso offline
   - ✅ verificato: pubblicazione riuscita (test passati su GitHub); sito, file dell'app, manifest, service worker e icone rispondono; http → https
-  - 🟡 da verificare da Ivan: installazione sull'iPad e uso in modalità aereo
+  - ✅ verificato da Ivan: installata sull'iPad, funziona in modalità aereo (dopo la correzione del service worker v2: la v1 falliva per file doppi nell'elenco)
+  - Nota: l'app installata ha una memoria separata da Safari e dal server di sviluppo → gli schemi vanno importati di nuovo dentro l'app installata
   - Controllo di sicurezza fatto prima di pubblicare: nessun segreto o dato personale nei file; PDF tolto da tutta la storia; commit con email anonima GitHub
 
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
@@ -379,6 +380,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **20/11/2026 — Sessione 1 (nonies):** corretto il service worker (doppioni nell'elenco) → offline verificato da Ivan sull'iPad.
 - **20/11/2026 — Sessione 1 (octies):** app installabile e offline (PWA), pubblicata su GitHub Pages con aggiornamento automatico; controllo di sicurezza; storia git ripulita (email anonima, niente PDF).
 - **20/11/2026 — Sessione 1 (septies):** Fase 7 — libreria, salvataggio locale, import/export JSON con controllo. 54 test.
 - **19/11/2026 — Sessione 1 (sexies):** Fase 6 — scelte A/B con bottoni, Scelta B trascritta (B1, B2a, B2b). Triangolo completo. 37 test. Poi aggiunta la Decisione 2 a fine B1.
@@ -394,6 +396,5 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Ivan installa l'app sull'iPad (Safari → Condividi → "Aggiungi alla schermata Home") e la prova in modalità aereo.
-2. **Fase 8: test con la squadra** in palestra → feedback scritto (cosa capiscono i giocatori, cosa manca).
-3. Dopo il feedback: Fase 9 (editor).
+1. **Fase 8: test con la squadra** in palestra → feedback scritto (cosa capiscono i giocatori, cosa manca, cosa è scomodo).
+2. Tornare con il feedback → piano della Fase 9 (editor), solo dopo l'OK.
