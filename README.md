@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–4 completate)
+> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–4 completate, Fase 5 in prova su iPad)
 
 ---
 
@@ -193,7 +193,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 2 | Campo SVG + 10 giocatori + palla, trascinabili | Si muovono con mouse e dito | ✔️ |
 | 3 | Modello dati + motore di animazione (con test) | Un passo si anima da A a B | ✔️ |
 | 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | ✔️ |
-| 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | ⬜ |
+| 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | 🟡 codice pronto, da provare su iPad |
 | 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ⬜ |
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ⬜ |
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ⬜ |
@@ -296,6 +296,11 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato da Ivan su iPad: frecce leggibili, animazione lungo le curve ok
   - Nota: nel passo 1 la punta della freccia dell'1 finisce sotto il 4 (l'1 va dove sta il 4 all'inizio, come da PDF)
 
+- 🟡 **Fase 5 (codice pronto):** player (`src/player.ts`) con ⏮ ▶/⏸ ⏭, ↺ dall'inizio, velocità 0,5×/1×/1,5×, barra di avanzamento, "Passo N di M", titolo, testo e premessa. Triangolo: situazione iniziale + Scelta A (Step 1–3). Tolti i pulsanti di prova
+  - ✅ verificato: 31 test passano (9 nuovi sul player); build senza errori; immagini dei passi A1–A3 controllate rispetto al PDF
+  - 🟡 da verificare da Ivan su iPad: comandi comodi col dito, testi leggibili, simboli ⏮ ▶ ⏭ visualizzati bene
+  - Trascinamento dei giocatori disattivato nel player (torna con l'editor, Fase 9)
+
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
 
 ## 11. Decisioni prese
@@ -318,6 +323,11 @@ Non passare alla Fase 2 finché non te lo dico.
 | 19/11/2026 | Frecce: taglio bianca piena, passaggio verde tratteggiata, palleggio blu ondulata, blocco con stanghetta finale (simbolo standard, 🟡 nel PDF non si vede bene), hand-off con due stanghette a metà. Spostamento = nessuna freccia |
 | 19/11/2026 | Percorsi: curva morbida che passa per tutti i punti (Catmull-Rom); il giocatore segue la stessa curva disegnata |
 | 19/11/2026 | Le frecce di un passo si vedono tutte prima di partire; ognuna sparisce (0,4 s) quando la sua azione finisce |
+| 19/11/2026 | Nuovo campo `prossimo` nel passo: dice qual è il passo dopo (con i rami A/B l'ordine della lista non basta). Senza `prossimo` e senza scelte lo schema finisce |
+| 19/11/2026 | Play riproduce UN passo e si ferma sull'inizio del passo dopo (l'allenatore spiega, poi ▶). Play a fine schema ricomincia |
+| 19/11/2026 | Nel player il trascinamento è disattivato |
+| 19/11/2026 | Difensori: ognuno resta sul suo uomo (X3 sul 3, ecc.). Nel PDF le etichette X2/X3 si scambiano tra le pagine; posizioni 🟡 approssimate |
+| 19/11/2026 | Temporaneo (fino alla Fase 6): a un passo con scelte il player segue la prima (A) |
 | 19/11/2026 | Palla: segue chi la ha; trascinata e lasciata entro 1 m da un attaccante passa a lui, altrimenti resta libera |
 
 ### Conseguenze della scelta iPad (🟡 = da verificare su iPad vero)
@@ -342,6 +352,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **19/11/2026 — Sessione 1 (quinquies):** Fase 5 — player con comandi, velocità e testi; Scelta A del Triangolo trascritta; tolte le prove temporanee. 31 test.
 - **19/11/2026 — Sessione 1 (quater):** Fase 4 — percorsi curvi, 5 tipi di freccia, prova frecce. 22 test.
 - **19/11/2026 — Sessione 1 (ter):** Fase 3 — modello dati, motore di animazione + 14 test, prova animata del passo 1 del Triangolo.
 - **19/11/2026 — Sessione 1 (bis):** Fase 2 — campo FIBA in SVG, giocatori e palla trascinabili (multi-tocco). Provata da Ivan su iPad: tutto funziona.
@@ -353,4 +364,5 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Fase 5: player (play/pausa/passi/velocità + testo) — piano proposto, in attesa dell'OK.
+1. Ivan prova il player sull'iPad.
+2. Chiudere la Fase 5 → Fase 6: scelte A/B con bottoni + Scelta B (B1, B2), solo dopo l'OK.
