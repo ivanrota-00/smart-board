@@ -1,6 +1,8 @@
 import './style.css'
 import { VISTA } from './coordinate'
 import { disegnaCampo } from './campo'
+import { montaGiocatori } from './giocatori'
+import { statoIniziale } from './stato'
 import { creaSvg } from './svg'
 
 // Safari su iPad ignora "user-scalable=no": blocchiamo lo zoom con due dita a mano.
@@ -15,6 +17,7 @@ const svg = creaSvg('svg', {
   'aria-label': 'Mezzo campo da basket',
 })
 disegnaCampo(svg)
+montaGiocatori(svg, statoIniziale())
 
 const pannello = document.createElement('aside')
 pannello.className = 'pannello'

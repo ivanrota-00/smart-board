@@ -69,5 +69,5 @@ body {
 }
 
 .in-trascinamento {
-  filter: drop-shadow(0 0.15px 0.25px rgba(0, 0, 0, 0.6));
+  opacity: 0.85; /* si vede che lo stai muovendo */
 }
