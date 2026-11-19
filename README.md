@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fase 1: setup progetto completato)
+> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fase 1 completata, Fase 2 in prova su iPad)
 
 ---
 
@@ -190,7 +190,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 |---|---|---|---|
 | 0 | Analisi e piano (questo file) | README e prompt pronti | ✔️ |
 | 1 | Setup progetto: cartella, Vite+TS, git, `CLAUDE.md`, PDF di esempio in `docs/esempi/` | `npm run dev` mostra una pagina | ✔️ |
-| 2 | Campo SVG + 10 giocatori + palla, trascinabili | Si muovono con mouse e dito | ⬜ |
+| 2 | Campo SVG + 10 giocatori + palla, trascinabili | Si muovono con mouse e dito | 🟡 codice pronto, da provare su iPad |
 | 3 | Modello dati + motore di animazione (con test) | Un passo si anima da A a B | ⬜ |
 | 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | ⬜ |
 | 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | ⬜ |
@@ -280,7 +280,11 @@ Non passare alla Fase 2 finché non te lo dico.
 - ✔️ **Fase 1 fatta:** cartella, git, Vite 8 + TypeScript 7, `CLAUDE.md`, `TODO.md`, pagina base
   - ✅ verificato: `npm run build` senza errori; `npm run dev` risponde e serve la pagina "Smart Board — Fase 1 OK"
   - ✅ verificato da Ivan: la pagina si vede sul Mac e sull'iPad (Safari, via `npm run dev -- --host`)
-- ⬜ Fase 2 in attesa dell'OK di Ivan
+- 🟡 **Fase 2 (codice pronto):** campo FIBA in SVG + pezzo oltre la metà campo, 10 giocatori e palla trascinabili
+  - ✅ verificato: build senza errori; anteprima del disegno controllata (campo e posizioni = pagina 1 del PDF)
+  - 🟡 da verificare da Ivan su iPad: trascinamento col dito, più dita insieme, palla che passa a un attaccante
+  - Il giocatore trascinato si alza di ~0,9 m sopra il dito dopo un piccolo movimento (sotto 0,2 m è un semplice tocco)
+  - Nessun salvataggio: ricaricando la pagina si torna alle posizioni del PDF (salvataggio in Fase 7)
 
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
 
@@ -298,6 +302,8 @@ Non passare alla Fase 2 finché non te lo dico.
 | 19/11/2026 | Commit piccoli a ogni passo che funziona + commit di chiusura fase |
 | 19/11/2026 | `TODO.md` separato per i compiti pratici; il README resta il documento principale |
 | 19/11/2026 | Vitest si installa solo in Fase 3 (quando serve) |
+| 19/11/2026 | Campo: si mostra anche ~2 m oltre la metà campo (come nel PDF); area visibile x −1…16, y −1…16,5 m |
+| 19/11/2026 | Palla: segue chi la ha; trascinata e lasciata entro 1 m da un attaccante passa a lui, altrimenti resta libera |
 
 ### Conseguenze della scelta iPad (🟡 = da verificare su iPad vero)
 - **Orientamento:** pensato per iPad in orizzontale; il campo occupa tutta l'altezza dello schermo.
@@ -321,6 +327,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **19/11/2026 — Sessione 1 (bis):** Fase 2 — campo FIBA in SVG, giocatori e palla trascinabili (multi-tocco). In attesa della prova su iPad.
 - **19/11/2026 — Sessione 1:** Fase 1 completata (Vite + TS, git, CLAUDE.md, TODO.md, pagina base touch-first: `100dvh`, aree sicure, niente scroll/zoom).
 - **19/11/2026 — Sessione 0:** analisi del PDF, fattibilità, stack, modello dati, piano a fasi, prompt iniziale. Nessun codice.
 - **19/11/2026 — Sessione 0 (quater):** uso solo di Ivan in palestra → v0.4 "Condividere" declassata a opzionale; tutte le domande aperte chiuse.
@@ -329,5 +336,6 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Decidere per la Fase 2: solo mezzo campo (y 0–14) o anche un pezzo oltre la metà campo come nei disegni del PDF.
-2. Dare l'OK alla Fase 2: campo SVG + 10 giocatori + palla trascinabili.
+1. Ivan prova la Fase 2 sull'iPad e dà feedback (dimensioni, sollevamento sopra il dito, palla).
+2. Correzioni se servono → chiudere la Fase 2.
+3. Fase 3: modello dati + motore di animazione (con Vitest), solo dopo l'OK.

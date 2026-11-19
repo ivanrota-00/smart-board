@@ -3,12 +3,12 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: dare l'OK per la Fase 2
 
-## Fase 2 — Campo SVG + giocatori trascinabili (in attesa di OK)
-- [ ] Decidere se mostrare solo il mezzo campo (y 0–14) o anche un pezzo oltre la metà campo come nel PDF
-- [ ] Campo FIBA in SVG, coordinate in metri
-- [ ] 5 attaccanti + 5 difensori + palla, trascinabili col dito
+## Fase 2 — Campo SVG + giocatori trascinabili
+- [x] Campo FIBA in SVG, coordinate in metri, con pezzo oltre la metà campo
+- [x] 5 attaccanti + 5 difensori + palla (posizioni pagina 1 del PDF)
+- [x] Trascinamento col dito, multi-tocco, giocatore sollevato sopra il dito
+- [ ] Ivan: provare sull'iPad (muovere giocatori, più dita, palla a un altro attaccante)
 
 ## Da verificare più avanti (🟡)
 - [ ] Freccia "blocco" con tacca: nel PDF a bassa risoluzione non si vede bene (Fase 4)
