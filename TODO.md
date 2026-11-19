@@ -3,7 +3,13 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: dare l'OK al piano della Fase 7
+- [ ] Ivan: provare la Libreria sull'iPad (vedi istruzioni in chat)
+
+## Fase 7 — Libreria + salvataggio + import/export
+- [x] Salvataggio locale (schemi, ultimo schema, velocità) con test
+- [x] Controllo dei file importati con messaggi chiari, con test
+- [x] Schermata Libreria: apri, importa, esporta, elimina, backup
+- [x] File di prova `docs/esempi/dai-e-vai.json`
 - [ ] Ivan: dare un'occhiata alla Decisione 2 (fine B1) sull'iPad
 
 ## Fase 6 — Scelte A/B
