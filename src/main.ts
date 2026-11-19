@@ -1,11 +1,13 @@
 import './style.css'
+import { Archivio } from './archivio'
 import { VISTA } from './coordinate'
 import { disegnaCampo } from './campo'
 import { montaFrecce } from './frecce'
 import { montaGiocatori } from './giocatori'
+import { montaLibreria } from './libreria'
 import { Player, VELOCITA } from './player'
 import { triangolo } from './schemi/triangolo'
-import type { Passo } from './schema'
+import type { Passo, Schema } from './schema'
 import { creaSvg } from './svg'
 
 // Safari su iPad ignora "user-scalable=no": blocchiamo lo zoom con due dita a mano.
@@ -24,16 +26,28 @@ disegnaCampo(svg)
 const stratoFrecce = creaSvg('g', { class: 'strato-frecce' }) // sotto i giocatori
 svg.append(stratoFrecce)
 
-const schema = triangolo
-const player = new Player(schema)
+// Salvataggio locale: schemi importati, ultimo schema aperto, velocità
+const memoria = (() => {
+  try {
+    return window.localStorage
+  } catch {
+    return null
+  }
+})()
+const archivio = new Archivio(memoria, [triangolo])
+
+let schema: Schema = (archivio.ultimo && archivio.trova(archivio.ultimo)) || triangolo
+let player = new Player(schema)
+player.velocita = archivio.velocita ?? 1
 const frecce = montaFrecce(stratoFrecce)
-const giocatori = montaGiocatori(svg, player.statoCampo())
+let giocatori = montaGiocatori(svg, player.statoCampo())
 giocatori.blocca(true) // nel player non si trascina (tornerà con l'editor, Fase 9)
 
 // --- Pannello a destra ---------------------------------------------------------
 const pannello = document.createElement('aside')
 pannello.className = 'pannello'
 pannello.innerHTML = `
+  <button type="button" id="apri-libreria" class="apri-libreria">📚 Libreria</button>
   <h1 id="nome"></h1>
   <p class="premessa" id="premessa"></p>
   <div class="passo">
@@ -76,8 +90,11 @@ const el = {
   bottoniScelta: $('bottoni-scelta'),
 }
 
-el.nome.textContent = schema.nome
-el.premessa.textContent = schema.premessa ?? ''
+function mostraIntestazione(): void {
+  el.nome.textContent = schema.nome
+  el.premessa.textContent = schema.premessa ?? ''
+}
+mostraIntestazione()
 
 const bottoniVelocita = VELOCITA.map((v) => {
   const b = document.createElement('button')
@@ -85,6 +102,7 @@ const bottoniVelocita = VELOCITA.map((v) => {
   b.textContent = `${String(v).replace('.', ',')}×`
   b.addEventListener('click', () => {
     player.velocita = v
+    archivio.velocita = v
     disegna()
   })
   el.velocita.append(b)
@@ -175,6 +193,29 @@ el.avanti.addEventListener('click', () => {
 el.ricomincia.addEventListener('click', () => {
   player.ricomincia()
   disegna()
+})
+
+// --- Libreria ---------------------------------------------------------------------
+function apriSchema(nuovo: Schema): void {
+  const velocita = player.velocita
+  schema = nuovo
+  player = new Player(schema)
+  player.velocita = velocita
+  archivio.ultimo = schema.id
+  // giocatori nuovi (lo schema può averne di diversi)
+  giocatori.distruggi()
+  giocatori = montaGiocatori(svg, player.statoCampo())
+  giocatori.blocca(true)
+  passoMostrato = null
+  mostraIntestazione()
+  disegna()
+}
+
+const libreria = montaLibreria(app, archivio, apriSchema)
+$<HTMLButtonElement>('apri-libreria').addEventListener('click', () => {
+  player.pausa()
+  disegna()
+  libreria.apri()
 })
 
 disegna()

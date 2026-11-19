@@ -23,6 +23,8 @@ export interface ControlliGiocatori {
   mostra(nuovo: StatoCampo): void
   /** true = il dito non può trascinare (es. durante l'animazione) */
   blocca(bloccato: boolean): void
+  /** Toglie giocatori, palla e ascoltatori dal campo (es. quando si cambia schema). */
+  distruggi(): void
 }
 
 export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): ControlliGiocatori {
@@ -148,7 +150,7 @@ export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): Controlli
     aggiornaPalla()
   }
 
-  svg.addEventListener('pointermove', (e) => {
+  function muovi(e: PointerEvent): void {
     const t = attivi.get(e.pointerId)
     if (!t) return
     const dito = schermoAMetri(svg, e.clientX, e.clientY)
@@ -175,7 +177,7 @@ export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): Controlli
       stato.palla.y = p.y
       aggiornaPalla()
     }
-  })
+  }
 
   function fine(e: PointerEvent): void {
     const t = attivi.get(e.pointerId)
@@ -202,6 +204,7 @@ export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): Controlli
     }
   }
 
+  svg.addEventListener('pointermove', muovi)
   svg.addEventListener('pointerup', fine)
   svg.addEventListener('pointercancel', fine)
 
@@ -216,6 +219,14 @@ export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): Controlli
       }
       stato.palla = { ...nuovo.palla }
       aggiornaTutto()
+    },
+    distruggi() {
+      svg.removeEventListener('pointermove', muovi)
+      svg.removeEventListener('pointerup', fine)
+      svg.removeEventListener('pointercancel', fine)
+      attivi.clear()
+      strato.remove()
+      palla.remove()
     },
     blocca(b) {
       bloccato = b
