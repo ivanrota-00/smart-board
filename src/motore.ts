@@ -1,6 +1,7 @@
 // Motore di animazione: funzioni "pure" (stessi dati → stesso risultato), senza grafica.
 // Domanda a cui risponde: "dove sono giocatori e palla al secondo t di un passo?"
 import type { Punto } from './coordinate'
+import { campionaCurva } from './geometria'
 import { eMovimento, type AzioneMovimento, type AzionePalla, type Passo, type Schema } from './schema'
 import { PALLA_IN_MANO, type StatoCampo } from './stato'
 
@@ -48,7 +49,7 @@ function posizioneGiocatore(partenza: Punto, movimenti: AzioneMovimento[], t: nu
   let pos = { ...partenza }
   for (const m of movimenti) {
     if (t <= m.inizio) break
-    const punti: Punto[] = [pos, ...m.percorso.map(([x, y]) => ({ x, y }))]
+    const punti = campionaCurva([pos, ...m.percorso.map(([x, y]) => ({ x, y }))])
     const avanzamento = m.durata > 0 ? limita01((t - m.inizio) / m.durata) : 1
     pos = puntoSuPercorso(punti, morbido(avanzamento))
     if (avanzamento < 1) break
@@ -56,19 +57,20 @@ function posizioneGiocatore(partenza: Punto, movimenti: AzioneMovimento[], t: nu
   return pos
 }
 
+/** Posizione di un giocatore al tempo t del passo (partendo dallo stato `inizio`). */
+export function posizioneAlTempo(inizio: StatoCampo, passo: Passo, id: string, t: number): Punto {
+  const g = inizio.giocatori.find((x) => x.id === id)
+  if (!g) return { x: 0, y: 0 }
+  const movimenti = passo.azioni
+    .filter(eMovimento)
+    .filter((a) => a.giocatore === id)
+    .sort((a, b) => a.inizio - b.inizio)
+  return posizioneGiocatore({ x: g.x, y: g.y }, movimenti, t)
+}
+
 /** Stato completo del campo al secondo t del passo. Non modifica `inizio`. */
 export function statoAlTempo(inizio: StatoCampo, passo: Passo, t: number): StatoCampo {
-  const movimentiDi = (id: string) =>
-    passo.azioni
-      .filter(eMovimento)
-      .filter((a) => a.giocatore === id)
-      .sort((a, b) => a.inizio - b.inizio)
-
-  const posAl = (id: string, tempo: number): Punto => {
-    const g = inizio.giocatori.find((x) => x.id === id)
-    if (!g) return { x: 0, y: 0 }
-    return posizioneGiocatore({ x: g.x, y: g.y }, movimentiDi(id), tempo)
-  }
+  const posAl = (id: string, tempo: number) => posizioneAlTempo(inizio, passo, id, tempo)
 
   const giocatori = inizio.giocatori.map((g) => ({ ...g, ...posAl(g.id, t) }))
 
