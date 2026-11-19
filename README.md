@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–4 completate, Fase 5 in prova su iPad)
+> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–5 completate)
 
 ---
 
@@ -193,7 +193,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 2 | Campo SVG + 10 giocatori + palla, trascinabili | Si muovono con mouse e dito | ✔️ |
 | 3 | Modello dati + motore di animazione (con test) | Un passo si anima da A a B | ✔️ |
 | 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | ✔️ |
-| 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | 🟡 codice pronto, da provare su iPad |
+| 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | ✔️ |
 | 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ⬜ |
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ⬜ |
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ⬜ |
@@ -296,9 +296,9 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato da Ivan su iPad: frecce leggibili, animazione lungo le curve ok
   - Nota: nel passo 1 la punta della freccia dell'1 finisce sotto il 4 (l'1 va dove sta il 4 all'inizio, come da PDF)
 
-- 🟡 **Fase 5 (codice pronto):** player (`src/player.ts`) con ⏮ ▶/⏸ ⏭, ↺ dall'inizio, velocità 0,5×/1×/1,5×, barra di avanzamento, "Passo N di M", titolo, testo e premessa. Triangolo: situazione iniziale + Scelta A (Step 1–3). Tolti i pulsanti di prova
+- ✔️ **Fase 5 fatta:** player (`src/player.ts`) con ⏮ ▶/⏸ ⏭, ↺ dall'inizio, velocità 0,5×/1×/1,5×, barra di avanzamento, "Passo N di M", titolo, testo e premessa. Triangolo: situazione iniziale + Scelta A (Step 1–3). Tolti i pulsanti di prova
   - ✅ verificato: 31 test passano (9 nuovi sul player); build senza errori; immagini dei passi A1–A3 controllate rispetto al PDF
-  - 🟡 da verificare da Ivan su iPad: comandi comodi col dito, testi leggibili, simboli ⏮ ▶ ⏭ visualizzati bene
+  - ✅ verificato da Ivan su iPad: comandi, testi e simboli ok
   - Trascinamento dei giocatori disattivato nel player (torna con l'editor, Fase 9)
 
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
@@ -364,5 +364,4 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Ivan prova il player sull'iPad.
-2. Chiudere la Fase 5 → Fase 6: scelte A/B con bottoni + Scelta B (B1, B2), solo dopo l'OK.
+1. Fase 6: scelte A/B con bottoni + Scelta B — piano proposto, in attesa dell'OK.

@@ -3,13 +3,14 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: provare il player sull'iPad
+- [ ] Ivan: dare l'OK al piano della Fase 6
 
 ## Fase 5 — Player
 - [x] Logica del player con 9 test (play/pausa, avanti/indietro, velocità, fine schema)
 - [x] Comandi grandi nel pannello, testi del passo, premessa, barra di avanzamento
 - [x] Triangolo: Scelta A (Step 1–3) trascritta dal PDF
 - [x] Tolti i pulsanti di prova delle Fasi 3–4
+- [x] Provata da Ivan su iPad: tutto ok (19/11/2026)
 
 ## Fase 4 — Frecce e tipi di azione
 - [x] Percorsi curvi (motore + disegno), con test
