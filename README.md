@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 19/11/2026 — Sessione 0 (analisi e pianificazione) + scelte: uso su iPad, solo mezzo campo
+> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fase 1: setup progetto completato)
 
 ---
 
@@ -189,7 +189,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | Fase | Obiettivo | Fatto quando… | Stato |
 |---|---|---|---|
 | 0 | Analisi e piano (questo file) | README e prompt pronti | ✔️ |
-| 1 | Setup progetto: cartella, Vite+TS, git, `CLAUDE.md`, PDF di esempio in `docs/esempi/` | `npm run dev` mostra una pagina | ⬜ |
+| 1 | Setup progetto: cartella, Vite+TS, git, `CLAUDE.md`, PDF di esempio in `docs/esempi/` | `npm run dev` mostra una pagina | ✔️ |
 | 2 | Campo SVG + 10 giocatori + palla, trascinabili | Si muovono con mouse e dito | ⬜ |
 | 3 | Modello dati + motore di animazione (con test) | Un passo si anima da A a B | ⬜ |
 | 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | ⬜ |
@@ -277,8 +277,12 @@ Non passare alla Fase 2 finché non te lo dico.
 - ✅ PDF di riferimento letto e analizzato
 - ✅ Fattibilità valutata: alta
 - ✅ Stack e modello dati proposti (bozza, **non ancora approvati da Ivan**)
-- ⬜ Nessun codice scritto
-- ⬜ Cartella progetto non ancora creata
+- ✔️ **Fase 1 fatta:** cartella, git, Vite 8 + TypeScript 7, `CLAUDE.md`, `TODO.md`, pagina base
+  - ✅ verificato: `npm run build` senza errori; `npm run dev` risponde e serve la pagina "Smart Board — Fase 1 OK"
+  - 🟡 non verificato: aspetto nel browser e su iPad (`npm run dev -- --host`)
+- ⬜ Fase 2 in attesa dell'OK di Ivan
+
+**Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
 
 ## 11. Decisioni prese
 
@@ -291,6 +295,9 @@ Non passare alla Fase 2 finché non te lo dico.
 | 19/11/2026 | **Nome: Smart Board.** Gli schemi li inserisce solo Ivan |
 | 19/11/2026 | **Solo uso di Ivan in palestra** (niente telefono/condivisione per ora) |
 | 19/11/2026 | **Solo mezzo campo** (il campo intero esce dalle idee future) |
+| 19/11/2026 | Commit piccoli a ogni passo che funziona + commit di chiusura fase |
+| 19/11/2026 | `TODO.md` separato per i compiti pratici; il README resta il documento principale |
+| 19/11/2026 | Vitest si installa solo in Fase 3 (quando serve) |
 
 ### Conseguenze della scelta iPad (🟡 = da verificare su iPad vero)
 - **Orientamento:** pensato per iPad in orizzontale; il campo occupa tutta l'altezza dello schermo.
@@ -314,6 +321,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **19/11/2026 — Sessione 1:** Fase 1 completata (Vite + TS, git, CLAUDE.md, TODO.md, pagina base touch-first: `100dvh`, aree sicure, niente scroll/zoom).
 - **19/11/2026 — Sessione 0:** analisi del PDF, fattibilità, stack, modello dati, piano a fasi, prompt iniziale. Nessun codice.
 - **19/11/2026 — Sessione 0 (quater):** uso solo di Ivan in palestra → v0.4 "Condividere" declassata a opzionale; tutte le domande aperte chiuse.
 - **19/11/2026 — Sessione 0 (ter):** nome Smart Board, schemi inseriti solo da Ivan, iPad 10 senza Apple Pencil → percorsi a tocchi, non a mano libera.
@@ -321,7 +329,6 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Rispondere alle domande aperte (anche solo a grandi linee).
-2. Creare la cartella del progetto e mettere il PDF in `docs/esempi/`.
-3. Aprire Claude Code in quella cartella e incollare il prompt del §8 (solo Fase 1).
-4. Tornare in chat con il risultato → aggiornare questo README.
+1. Provare la pagina sull'iPad (`npm run dev -- --host`, stessa Wi-Fi).
+2. Decidere per la Fase 2: solo mezzo campo (y 0–14) o anche un pezzo oltre la metà campo come nei disegni del PDF.
+3. Dare l'OK alla Fase 2: campo SVG + 10 giocatori + palla trascinabili.
