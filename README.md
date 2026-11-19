@@ -1,7 +1,7 @@
 # 🏀 Smart Board — Lavagnetta tattica digitale animata
 
 > **Nome: Smart Board** (scelto da Ivan il 19/11/2026). File vivo: va aggiornato a fine di ogni sessione (chat o Claude Code).
-> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1 e 2 completate)
+> Ultimo aggiornamento: 19/11/2026 — Sessione 1 (Fasi 1–2 completate, Fase 3 in prova su iPad)
 
 ---
 
@@ -191,7 +191,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 0 | Analisi e piano (questo file) | README e prompt pronti | ✔️ |
 | 1 | Setup progetto: cartella, Vite+TS, git, `CLAUDE.md`, PDF di esempio in `docs/esempi/` | `npm run dev` mostra una pagina | ✔️ |
 | 2 | Campo SVG + 10 giocatori + palla, trascinabili | Si muovono con mouse e dito | ✔️ |
-| 3 | Modello dati + motore di animazione (con test) | Un passo si anima da A a B | ⬜ |
+| 3 | Modello dati + motore di animazione (con test) | Un passo si anima da A a B | 🟡 codice + test pronti, da provare su iPad |
 | 4 | Frecce e tipi di azione | Le 4 frecce del PDF si vedono bene | ⬜ |
 | 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | ⬜ |
 | 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ⬜ |
@@ -286,6 +286,11 @@ Non passare alla Fase 2 finché non te lo dico.
   - Il giocatore trascinato si alza di ~0,9 m sopra il dito dopo un piccolo movimento (sotto 0,2 m è un semplice tocco)
   - Nessun salvataggio: ricaricando la pagina si torna alle posizioni del PDF (salvataggio in Fase 7)
 
+- 🟡 **Fase 3 (codice pronto):** tipi dello schema (`src/schema.ts`), motore di animazione (`src/motore.ts`), passo 1 del Triangolo (`src/schemi/triangolo.ts`), pulsanti temporanei "Prova passo 1" / "Ricomincia"
+  - ✅ verificato: 14 test Vitest passano (`npm test`); build senza errori; fotogrammi a metà e a fine passo controllati (fine = pagina 3 del PDF)
+  - 🟡 da verificare da Ivan su iPad: fluidità dell'animazione
+  - Percorsi per ora a tratti dritti (curve con le frecce in Fase 4)
+
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
 
 ## 11. Decisioni prese
@@ -303,6 +308,8 @@ Non passare alla Fase 2 finché non te lo dico.
 | 19/11/2026 | `TODO.md` separato per i compiti pratici; il README resta il documento principale |
 | 19/11/2026 | Vitest si installa solo in Fase 3 (quando serve) |
 | 19/11/2026 | Campo: si mostra anche ~2 m oltre la metà campo (come nel PDF); area visibile x −1…16, y −1…16,5 m |
+| 19/11/2026 | Nuovo tipo di azione `spostamento`: movimento senza freccia (es. difensori). Tempi delle azioni in secondi |
+| 19/11/2026 | Palla in volo: va dalla mano di chi passa (a inizio passaggio) a quella di chi riceve (all'arrivo), in linea retta. Movimenti con partenza/arrivo morbidi |
 | 19/11/2026 | Palla: segue chi la ha; trascinata e lasciata entro 1 m da un attaccante passa a lui, altrimenti resta libera |
 
 ### Conseguenze della scelta iPad (🟡 = da verificare su iPad vero)
@@ -327,6 +334,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **19/11/2026 — Sessione 1 (ter):** Fase 3 — modello dati, motore di animazione + 14 test, prova animata del passo 1 del Triangolo.
 - **19/11/2026 — Sessione 1 (bis):** Fase 2 — campo FIBA in SVG, giocatori e palla trascinabili (multi-tocco). Provata da Ivan su iPad: tutto funziona.
 - **19/11/2026 — Sessione 1:** Fase 1 completata (Vite + TS, git, CLAUDE.md, TODO.md, pagina base touch-first: `100dvh`, aree sicure, niente scroll/zoom).
 - **19/11/2026 — Sessione 0:** analisi del PDF, fattibilità, stack, modello dati, piano a fasi, prompt iniziale. Nessun codice.
@@ -336,4 +344,5 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Fase 3: modello dati + motore di animazione (con Vitest) — piano proposto, in attesa dell'OK.
+1. Ivan prova "▶ Prova passo 1" sull'iPad.
+2. Chiudere la Fase 3 → Fase 4: frecce e tipi di azione (solo dopo l'OK).
