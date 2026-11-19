@@ -1,7 +1,7 @@
 // Service worker: salva l'app nell'iPad così funziona anche senza rete (palestra).
 // - Pagina principale: prima prova la rete (così arrivano gli aggiornamenti), se manca usa la copia salvata.
 // - File dell'app (js, css, icone): usa la copia salvata, altrimenti li scarica e li salva.
-const CACHE = 'smart-board-v1'
+const CACHE = 'smart-board-v2'
 
 self.addEventListener('install', (evento) => {
   evento.waitUntil(
@@ -12,7 +12,9 @@ self.addEventListener('install', (evento) => {
       const html = await risposta.clone().text()
       await cache.put('./', risposta)
       const file = [...html.matchAll(/(?:src|href)="(\.\/[^"]+)"/g)].map((m) => m[1])
-      await cache.addAll(['./manifest.webmanifest', './icona-180.png', './icona-192.png', ...file])
+      // Senza doppioni: se l'elenco ne contiene, addAll fallisce tutto (errore della v1)
+      const elenco = new Set(['./manifest.webmanifest', './icona-180.png', './icona-192.png', ...file])
+      await cache.addAll([...elenco])
       await self.skipWaiting()
     })(),
   )
