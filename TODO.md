@@ -3,13 +3,14 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: provare "▶ Prova passo 1" sull'iPad
+- [ ] Ivan: dare l'OK al piano della Fase 4
 
 ## Fase 3 — Modello dati + motore di animazione
 - [x] Vitest installato, `npm test`
 - [x] Tipi dello schema (con `versione`) e motore (`statoAlTempo`, `statoFinePasso`)
 - [x] 14 test sul motore
 - [x] Passo 1 del Triangolo + pulsanti di prova (temporanei, sostituiti in Fase 5)
+- [x] Provata da Ivan su iPad: funziona (19/11/2026)
 
 ## Fase 2 — Campo SVG + giocatori trascinabili
 - [x] Campo FIBA in SVG, coordinate in metri, con pezzo oltre la metà campo
