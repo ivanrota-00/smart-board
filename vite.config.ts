@@ -4,4 +4,8 @@ import { defineConfig } from 'vite'
 // GitHub Pages (https://<utente>.github.io/smart-board/).
 export default defineConfig({
   base: './',
+  define: {
+    // data e ora della costruzione: mostrata in Libreria ("Versione app")
+    __DATA_BUILD__: JSON.stringify(new Date().toISOString()),
+  },
 })

@@ -27,6 +27,7 @@ export function montaLibreria(
         <button type="button" class="importa">⬇︎ Importa file JSON</button>
         <button type="button" class="backup">⬆︎ Esporta tutto (backup)</button>
         <p class="nota-backup"></p>
+        <p class="nota-backup versione"></p>
       </div>
       <input type="file" accept=".json,application/json" hidden />
     </section>
@@ -37,14 +38,31 @@ export function montaLibreria(
   const elenco = q<HTMLUListElement>('.elenco')
   const input = q<HTMLInputElement>('input[type=file]')
   const notaBackup = q<HTMLParagraphElement>('.nota-backup')
+  q<HTMLParagraphElement>('.versione').textContent = `Versione app: ${new Date(__DATA_BUILD__).toLocaleString('it-IT', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })}`
 
   function chiudi(): void {
     fondo.hidden = true
   }
 
+  function gruppo(testo: string, classe = 'gruppo'): HTMLLIElement {
+    const li = document.createElement('li')
+    li.className = classe
+    li.textContent = testo
+    return li
+  }
+
   function disegnaElenco(): void {
-    elenco.replaceChildren(
-      ...archivio.tutti().map(({ schema, predefinito }) => {
+    const voci = archivio.tutti()
+    const squadra = voci.filter((v) => v.predefinito)
+    const miei = voci.filter((v) => !v.predefinito)
+    const righe = (lista: typeof voci) =>
+      lista.map(({ schema, predefinito }) => {
         const li = document.createElement('li')
         const apri = document.createElement('button')
         apri.type = 'button'
@@ -52,7 +70,7 @@ export function montaLibreria(
         const titolo = document.createElement('strong')
         titolo.textContent = schema.nome
         const info = document.createElement('span')
-        info.textContent = `${schema.passi.length} passi${predefinito ? ' · predefinito' : ''}`
+        info.textContent = `${schema.passi.length} passi`
         apri.append(titolo, info)
         apri.addEventListener('click', () => {
           chiudi()
@@ -79,12 +97,17 @@ export function montaLibreria(
           li.append(elimina)
         }
         return li
-      }),
+      })
+    elenco.replaceChildren(
+      gruppo('Playbook della squadra'),
+      ...righe(squadra),
+      gruppo('I miei schemi'),
+      ...(miei.length ? righe(miei) : [gruppo('Nessuno: usa "Importa file JSON" qui sotto.', 'vuoto')]),
     )
     const nUtente = archivio.schemiUtente().length
     notaBackup.textContent =
       nUtente === 0
-        ? 'Nessuno schema tuo da salvare (il Triangolo è già nell’app).'
+        ? 'Nessuno schema tuo da salvare (il playbook è già nell’app).'
         : `Ultimo backup: ${giorniFa(archivio.ultimoBackup)}`
   }
 

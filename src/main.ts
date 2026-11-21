@@ -57,8 +57,10 @@ giocatori.blocca(true) // nel player non si trascina (tornerà con l'editor, Fas
 const pannello = document.createElement('aside')
 pannello.className = 'pannello'
 pannello.innerHTML = `
-  <button type="button" id="apri-libreria" class="apri-libreria">📚 Libreria</button>
-  <h1 id="nome"></h1>
+  <div class="intestazione">
+    <button type="button" id="apri-libreria" class="apri-libreria">📚 Libreria</button>
+    <h1 id="nome"></h1>
+  </div>
   <p class="premessa" id="premessa"></p>
   <div class="passo">
     <p class="numero" id="numero"></p>
@@ -71,7 +73,7 @@ pannello.innerHTML = `
   </div>
   <div class="comandi">
     <div class="barra"><div class="barra-piena" id="barra"></div></div>
-    <div class="riga">
+    <div class="riga tasti">
       <button type="button" id="indietro" aria-label="Indietro">⏮&#xFE0E;</button>
       <button type="button" id="play" class="principale" aria-label="Play">▶&#xFE0E;</button>
       <button type="button" id="avanti" aria-label="Avanti">⏭&#xFE0E;</button>
@@ -152,7 +154,11 @@ function disegna(): void {
       }),
     )
   }
+  const eraInDecisione = !el.decisione.hidden
   el.decisione.hidden = !player.inDecisione
+  pannello.classList.toggle('in-decisione', player.inDecisione)
+  // appena compare la decisione, assicuriamoci che si veda (schermi piccoli)
+  if (player.inDecisione && !eraInDecisione) el.decisione.scrollIntoView({ block: 'nearest' })
   frecce.aggiorna(player.t)
   giocatori.mostra(player.statoCampo())
 
@@ -204,6 +210,45 @@ el.ricomincia.addEventListener('click', () => {
   player.ricomincia()
   disegna()
 })
+
+// --- Avviso "come installare" (solo nel browser del telefono/tablet, non nell'app installata) ---
+function mostraAvvisoInstalla(): void {
+  const installata =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true
+  if (installata) return
+  try {
+    if (localStorage.getItem('smartboard.avvisoInstalla') === 'chiuso') return
+  } catch {
+    /* senza memoria lo mostriamo comunque */
+  }
+  const ua = navigator.userAgent
+  const ios = /iPhone|iPad|iPod/.test(ua) || (ua.includes('Macintosh') && navigator.maxTouchPoints > 1)
+  const android = /Android/.test(ua)
+  if (!ios && !android) return
+
+  const avviso = document.createElement('div')
+  avviso.className = 'avviso-installa'
+  const testo = document.createElement('p')
+  testo.textContent = ios
+    ? 'Per usarla come app, anche offline: in Safari tocca Condividi (o ⋯ → Condividi) e poi "Aggiungi alla schermata Home".'
+    : 'Per usarla come app, anche offline: nel menu ⋮ di Chrome tocca "Installa app" (o "Aggiungi a schermata Home"). Se l’hai aperta da WhatsApp, prima scegli "Apri in Chrome".'
+  const chiudi = document.createElement('button')
+  chiudi.type = 'button'
+  chiudi.textContent = '✕'
+  chiudi.setAttribute('aria-label', 'Chiudi avviso')
+  chiudi.addEventListener('click', () => {
+    avviso.remove()
+    try {
+      localStorage.setItem('smartboard.avvisoInstalla', 'chiuso')
+    } catch {
+      /* niente */
+    }
+  })
+  avviso.append(testo, chiudi)
+  document.body.append(avviso)
+}
+mostraAvvisoInstalla()
 
 // --- Libreria ---------------------------------------------------------------------
 function apriSchema(nuovo: Schema): void {

@@ -339,9 +339,234 @@ body {
   padding-top: 1rem;
 }
 
+.libreria .elenco .gruppo {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.libreria .elenco .vuoto {
+  font-size: 0.95rem;
+  opacity: 0.6;
+}
+
 .nota-backup {
   flex-basis: 100%;
   margin: 0;
   font-size: 0.9rem;
   opacity: 0.65;
+}
+
+/* --- Intestazione del pannello --------------------------------------------- */
+.intestazione {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.intestazione h1 {
+  margin: 0;
+}
+
+/* --- Avviso "come installare" ------------------------------------------------ */
+.avviso-installa {
+  position: fixed;
+  left: calc(env(safe-area-inset-left) + 0.75rem);
+  right: calc(env(safe-area-inset-right) + 0.75rem);
+  top: calc(env(safe-area-inset-top) + 0.75rem); /* in alto: non copre i comandi */
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.75rem 0.75rem 1rem;
+  background: #2b2b2b;
+  border: 2px solid #e8692c;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.avviso-installa p {
+  flex: 1;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.avviso-installa button {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  font-size: 1.2rem;
+  color: #fff;
+  background: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 10px;
+  touch-action: manipulation;
+}
+
+/* === Schermo in verticale (telefono, iPad in verticale): campo sopra, pannello sotto === */
+@media (orientation: portrait) {
+  #app {
+    flex-direction: column;
+  }
+
+  .campo {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 62dvh;
+  }
+
+  .pannello {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+/* === Telefono (schermo piccolo, in qualsiasi orientamento): tutto più compatto === */
+@media (max-width: 600px), (max-height: 600px) {
+  .pannello {
+    padding: 0.6rem 0.9rem 0.5rem;
+    gap: 0.6rem;
+  }
+
+  .intestazione {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .intestazione h1 {
+    order: -1; /* nome a sinistra, Libreria a destra */
+    font-size: 1.2rem;
+  }
+
+  .apri-libreria {
+    min-height: 44px;
+    padding: 0 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .pannello .premessa {
+    font-size: 0.8rem;
+    /* al massimo 2 righe */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .passo .numero {
+    font-size: 0.75rem;
+  }
+
+  .passo h2 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .passo p {
+    font-size: 0.95rem;
+  }
+
+  .decisione {
+    padding: 0.6rem;
+  }
+
+  .decisione p {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Alla decisione: via premessa e testo, bottoni A/B affiancati */
+  .in-decisione .premessa,
+  .in-decisione #testo {
+    display: none;
+  }
+
+  .bottoni-scelta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .bottoni-scelta button {
+    min-height: 52px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  /* Comandi su 3 righe compatte, sempre visibili in fondo */
+  .comandi {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem;
+    position: sticky;
+    bottom: 0;
+    padding-top: 0.4rem;
+    background: #1a1a1a;
+  }
+
+  .comandi .barra,
+  .comandi .tasti {
+    grid-column: 1 / -1;
+  }
+
+  .riga {
+    gap: 0.5rem;
+  }
+
+  .comandi button {
+    min-height: 48px;
+    font-size: 1.3rem;
+  }
+
+  .comandi button.principale {
+    min-height: 54px;
+    font-size: 1.6rem;
+  }
+
+  .comandi .velocita button,
+  .comandi button.largo {
+    min-height: 44px;
+    font-size: 0.95rem;
+  }
+
+  .libreria {
+    padding: 1rem;
+  }
+
+  .libreria .elenco .apri,
+  .libreria .elenco .piccolo {
+    min-height: 56px;
+  }
+
+  .libreria button {
+    font-size: 0.95rem;
+  }
+}
+
+/* === Telefoni bassi in verticale (es. iPhone SE): campo un po' più piccolo === */
+@media (orientation: portrait) and (max-height: 720px) {
+  .campo {
+    max-height: 50dvh;
+  }
+}
+
+/* Alla decisione sugli schermi piccoli la velocità non serve: più spazio ai bottoni A/B */
+@media (max-width: 600px), (max-height: 600px) {
+  .in-decisione .comandi .velocita {
+    display: none;
+  }
+
+  /* lo scorrimento automatico verso la decisione tiene conto dei comandi fissi in fondo */
+  .pannello {
+    scroll-padding-bottom: 150px;
+  }
 }
