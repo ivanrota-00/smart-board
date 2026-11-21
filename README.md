@@ -197,7 +197,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ✔️ |
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ✔️ |
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ✔️ |
-| 9 | **Telefono + playbook** (Android e iPhone): layout per schermo piccolo, schemi della squadra dentro l'app | Un giocatore installa il link sul telefono e vede il playbook offline | 🟡 codice pubblicato, da provare su iPhone e Android |
+| 9 | **Telefono + playbook** (Android e iPhone): layout per schermo piccolo, schemi della squadra dentro l'app | Un giocatore installa il link sul telefono e vede il playbook offline | ✔️ |
 | 10 | Editor (v0.2) | Crei uno schema nuovo da zero | ⬜ |
 | 11 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
 | 12 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | ✔️ parte PWA (installazione + offline); resta l'eventuale condivisione v0.4 |
@@ -321,13 +321,13 @@ Non passare alla Fase 2 finché non te lo dico.
   - Nota: l'app installata ha una memoria separata da Safari e dal server di sviluppo → gli schemi vanno importati di nuovo dentro l'app installata
   - Controllo di sicurezza fatto prima di pubblicare: nessun segreto o dato personale nei file; PDF tolto da tutta la storia; commit con email anonima GitHub
 
-- 🟡 **Fase 9 (pubblicata):** telefono + playbook
+- ✔️ **Fase 9 fatta:** telefono + playbook
   - Layout per telefono solo CSS: in verticale campo sopra e comandi sotto (sempre visibili); in orizzontale come iPad ma compatto; alla decisione bottoni A/B affiancati. iPad invariato
   - Playbook = file `.json` in `src/schemi/` caricati da soli (`src/playbook.ts`); Triangolo convertito in `src/schemi/triangolo.json`; test che blocca la pubblicazione se un file è sbagliato
   - Libreria divisa in "Playbook della squadra" e "I miei schemi", con "Versione app: data"
   - Avviso "come installare" (iPhone / Android) solo nel browser del telefono, chiudibile
   - ✅ verificato: 57 test; pubblicazione ok; **foto della pagina fatte con WebKit (il motore di Safari) sul Mac** a misure di iPhone verticale/orizzontale, Android piccolo, iPhone SE e iPad: comandi, Libreria e decisione A/B si vedono interi
-  - 🟡 da verificare su telefoni veri: installazione su iPhone e Android, offline, leggibilità in mano. Le foto WebKit non provano Chrome/Android
+  - ✅ verificato da Ivan: funziona su iPhone e su Android
 
 **Aggiungere uno schema al playbook:** (1) in Libreria tocca "Esporta" sullo schema → file `.json`; (2) passalo a Claude Code, oppure su github.com/ivanrota-00/smart-board apri la cartella `src/schemi` → "Add file" → "Upload files" → trascina il file → "Commit changes". In ~1 minuto GitHub controlla il file e aggiorna l'app di tutti (se il file è sbagliato non pubblica e manda un'email).
 
@@ -396,6 +396,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **21/11/2026 — Fase 9 chiusa:** verificata da Ivan su iPhone e Android.
 - **21/11/2026 — Fase 9:** layout per telefono, playbook da file JSON, Libreria divisa + versione, avviso di installazione. Verificato con foto WebKit a varie misure. 57 test.
 - **21/11/2026 — Fase 8:** test in palestra riuscito ("un successo"). Richiesta emersa: averlo anche sui **telefoni** (allenatori e giocatori, Android e iPhone), offline come un'app, come playbook.
 - **20/11/2026 — Sessione 1 (nonies):** corretto il service worker (doppioni nell'elenco) → offline verificato da Ivan sull'iPad.
@@ -414,5 +415,4 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Ivan prova su **iPhone** e su un **Android**: installazione, offline, leggibilità.
-2. Chiudere la Fase 9 → Fase 10: editor (solo dopo l'OK).
+1. Fase 10: editor — piano proposto (diviso in 10a/10b/10c), in attesa dell'OK.

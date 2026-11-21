@@ -3,8 +3,7 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: provare la Fase 9 su iPhone e Android (installazione, offline, leggibilità)
-- [ ] Trovare un telefono Android per la prova (tuo o di un giocatore)
+- [ ] Ivan: dare l'OK al piano della Fase 10 (editor)
 - [ ] Ivan: attivare l'autenticazione a due fattori su GitHub (se non c'è già)
 - [x] Fase 8 — test in palestra: successo (21/11/2026). Richiesta: versione per telefono (Android + iPhone)
 
@@ -13,6 +12,7 @@ Compiti pratici. Il piano completo è nel README (§7).
 - [x] Layout telefono (verticale, orizzontale, schermi piccoli) — controllato con foto WebKit
 - [x] Libreria: "Playbook della squadra" / "I miei schemi" + versione app
 - [x] Avviso per installare su iPhone/Android
+- [x] Provata da Ivan su iPhone e Android: funziona (21/11/2026)
 
 ## Pubblicazione + PWA
 - [x] Manifest, icone, service worker per l'offline
