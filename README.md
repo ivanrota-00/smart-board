@@ -198,7 +198,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ✔️ |
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ✔️ |
 | 9 | **Telefono + playbook** (Android e iPhone): layout per schermo piccolo, schemi della squadra dentro l'app | Un giocatore installa il link sul telefono e vede il playbook offline | ✔️ |
-| 10 | Editor (v0.2) | Crei uno schema nuovo da zero | ⬜ |
+| 10 | Editor (v0.2) | Crei uno schema nuovo da zero | 🟡 10a pubblicata (da provare su iPad); 10b e 10c da fare |
 | 11 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
 | 12 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | ✔️ parte PWA (installazione + offline); resta l'eventuale condivisione v0.4 |
 
@@ -329,6 +329,17 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato: 57 test; pubblicazione ok; **foto della pagina fatte con WebKit (il motore di Safari) sul Mac** a misure di iPhone verticale/orizzontale, Android piccolo, iPhone SE e iPad: comandi, Libreria e decisione A/B si vedono interi
   - ✅ verificato da Ivan: funziona su iPhone e su Android
 
+- 🟡 **Fase 10a (pubblicata):** editor, solo su schermi grandi (iPad)
+  - "✏️ Modifica" nel pannello; "➕ Nuovo schema" in Libreria (4 fuori 1 dentro, difensori a 1,4 m verso canestro, palla all'1)
+  - Modificare uno schema del playbook crea una **copia** in "I miei schemi"
+  - Elenco passi (ordine di lettura, anche nei rami), titolo e testo, ➕ Passo dopo, ⧉ Duplica, 🗑 Elimina (ricollega i passi; se elimini il primo, la sua fine diventa la situazione iniziale)
+  - Trascinamento di giocatori e palla solo nel primo passo (situazione iniziale); ↶ Annulla / ↷ Ripeti; salvataggio automatico
+  - Logica in `src/editor/modello.ts` e `src/editor/storia.ts` (15 test), pannello in `src/editor/editor.ts`
+  - ✅ verificato: 72 test; build; foto WebKit di editor (Triangolo copia, passo nei rami, nuovo schema + passo) e telefono senza "Modifica"
+  - 🟡 da verificare da Ivan su iPad: trascinamento nell'editor, tastiera nei campi di testo, annulla/ripeti
+
+**Aggiornamenti per chi ha l'app:** non serve ridare il link. Le modifiche pubblicate arrivano la prossima volta che aprono l'app **con la rete** (a volte serve chiuderla del tutto e riaprirla). Offline vedono l'ultima versione ricevuta. Arrivano a tutti solo gli schemi del **playbook** (`src/schemi`); quelli creati/modificati sul tuo iPad restano lì finché non li carichi nel playbook.
+
 **Aggiungere uno schema al playbook:** (1) in Libreria tocca "Esporta" sullo schema → file `.json`; (2) passalo a Claude Code, oppure su github.com/ivanrota-00/smart-board apri la cartella `src/schemi` → "Add file" → "Upload files" → trascina il file → "Commit changes". In ~1 minuto GitHub controlla il file e aggiorna l'app di tutti (se il file è sbagliato non pubblica e manda un'email).
 
 **Come avviare:** `npm install` (solo la prima volta) → `npm run dev` → apri http://localhost:5173. Dall'iPad: `npm run dev -- --host` e apri l'indirizzo "Network" mostrato nel terminale.
@@ -371,6 +382,9 @@ Non passare alla Fase 2 finché non te lo dico.
 | 21/11/2026 | **Playbook dentro l'app**: gli schemi della squadra fanno parte dell'app pubblicata (aggiornamenti automatici). Accettato che chi ha il link possa vederli (sito pubblico). Niente nomi dei giocatori nell'app |
 | 21/11/2026 | Ordine: prima telefono (nuova Fase 9), poi editor (Fase 10) |
 | 21/11/2026 | Telefono: layout solo con CSS (media query), nessuna libreria; manifest con orientamento "any" |
+| 21/11/2026 | Editor solo su schermi grandi (iPad): sui telefoni "Modifica" e "Nuovo schema" non compaiono (app dei giocatori semplice) |
+| 21/11/2026 | Editor: tempi delle azioni automatici ("dopo la precedente" / "insieme"), niente secondi (10b) |
+| 21/11/2026 | Editor diviso in 10a (base), 10b (disegno azioni), 10c (scelte, specchia, mostra/nascondi difesa) |
 | 21/11/2026 | Playbook come file JSON in `src/schemi/` (invece che codice TypeScript): si aggiunge uno schema caricando un file, anche dal sito di GitHub |
 | 19/11/2026 | Palla: segue chi la ha; trascinata e lasciata entro 1 m da un attaccante passa a lui, altrimenti resta libera |
 
@@ -396,6 +410,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **21/11/2026 — Fase 10a:** editor base su iPad (nuovo schema, modifica/copia, passi, testi, posizioni iniziali, annulla/ripeti). 72 test.
 - **21/11/2026 — Fase 9 chiusa:** verificata da Ivan su iPhone e Android.
 - **21/11/2026 — Fase 9:** layout per telefono, playbook da file JSON, Libreria divisa + versione, avviso di installazione. Verificato con foto WebKit a varie misure. 57 test.
 - **21/11/2026 — Fase 8:** test in palestra riuscito ("un successo"). Richiesta emersa: averlo anche sui **telefoni** (allenatori e giocatori, Android e iPhone), offline come un'app, come playbook.
@@ -415,4 +430,6 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Fase 10: editor — piano proposto (diviso in 10a/10b/10c), in attesa dell'OK.
+1. Ivan prova la 10a sull'iPad.
+2. Poi 10b: disegnare le azioni a tocchi (taglio, palleggio, blocco, passaggio, hand-off, spostamento), maniglie per correggere, tempi automatici.
+3. Poi 10c: scelte A/B, specchia, mostra/nascondi difesa.

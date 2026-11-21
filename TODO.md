@@ -3,9 +3,14 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
-- [ ] Ivan: dare l'OK al piano della Fase 10 (editor)
+- [ ] Ivan: provare la Fase 10a sull'iPad (vedi istruzioni in chat)
 - [ ] Ivan: attivare l'autenticazione a due fattori su GitHub (se non c'è già)
 - [x] Fase 8 — test in palestra: successo (21/11/2026). Richiesta: versione per telefono (Android + iPhone)
+
+## Fase 10 — Editor
+- [x] 10a: nuovo schema, Modifica (copia dal playbook), passi, testi, posizioni iniziali, annulla/ripeti, salvataggio
+- [ ] 10b: disegnare le azioni a tocchi + maniglie + tempi automatici
+- [ ] 10c: scelte A/B, specchia schema, mostra/nascondi difesa
 
 ## Fase 9 — Telefono + playbook
 - [x] Playbook da file JSON in `src/schemi/` + test
