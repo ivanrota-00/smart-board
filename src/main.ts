@@ -6,7 +6,7 @@ import { montaFrecce } from './frecce'
 import { montaGiocatori } from './giocatori'
 import { montaLibreria } from './libreria'
 import { Player, VELOCITA } from './player'
-import { triangolo } from './schemi/triangolo'
+import { playbook } from './playbook'
 import type { Passo, Schema } from './schema'
 import { creaSvg } from './svg'
 
@@ -44,9 +44,9 @@ const memoria = (() => {
     return null
   }
 })()
-const archivio = new Archivio(memoria, [triangolo])
+const archivio = new Archivio(memoria, playbook)
 
-let schema: Schema = (archivio.ultimo && archivio.trova(archivio.ultimo)) || triangolo
+let schema: Schema = (archivio.ultimo && archivio.trova(archivio.ultimo)) || playbook[0]
 let player = new Player(schema)
 player.velocita = archivio.velocita ?? 1
 const frecce = montaFrecce(stratoFrecce)

@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { Archivio, giorniFa } from './archivio'
 import type { Schema } from './schema'
-import { triangolo } from './schemi/triangolo'
+import triangoloJson from './schemi/triangolo.json'
 import { leggiImport, validaSchema } from './valida'
 
+const triangolo = triangoloJson as unknown as Schema
 const copia = (): Record<string, any> => JSON.parse(JSON.stringify(triangolo))
 const errori = (d: unknown) => {
   const r = validaSchema(d)
