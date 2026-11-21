@@ -16,7 +16,7 @@ export function nuovoSchema(id: string, nome: string): Schema {
     ['2', 13.0, 6.5],
     ['3', 2.0, 6.5],
     ['4', 14.0, 1.3],
-    ['5', 9.3, 2.6],
+    ['5', 10.0, 3.2],
   ]
   const giocatori: Giocatore[] = []
   for (const [n, x, y] of attacco) giocatori.push({ id: `A${n}`, squadra: 'att', label: n, x, y })
@@ -24,7 +24,7 @@ export function nuovoSchema(id: string, nome: string): Schema {
     const dx = CANESTRO.x - x
     const dy = CANESTRO.y - y
     const d = Math.hypot(dx, dy) || 1
-    const passo = Math.min(1.0, d / 2)
+    const passo = Math.min(1.4, d / 2) // 1,4 m: i cerchi non si sovrappongono
     giocatori.push({
       id: `D${n}`,
       squadra: 'dif',

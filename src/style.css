@@ -408,6 +408,136 @@ body {
   touch-action: manipulation;
 }
 
+/* --- Pulsanti in testa al pannello ------------------------------------------- */
+.bottoni-testa {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.pannello[hidden] {
+  display: none;
+}
+
+/* I campi di testo devono poter essere selezionati e scritti */
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* --- Editor ----------------------------------------------------------------- */
+.pannello-editor {
+  gap: 0.8rem;
+}
+
+.ed-testa,
+.ed-bottoni {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pannello-editor button {
+  min-height: 48px;
+  padding: 0 0.9rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 12px;
+  touch-action: manipulation;
+}
+
+.pannello-editor button:active {
+  filter: brightness(1.25);
+}
+
+.pannello-editor button:disabled {
+  opacity: 0.35;
+}
+
+.pannello-editor .ed-fine {
+  background: #e8692c;
+  border-color: #e8692c;
+}
+
+.pannello-editor .pericolo {
+  color: #ffb0b0;
+  border-color: #7a3030;
+}
+
+.ed-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.ed-campo input,
+.ed-campo textarea {
+  min-height: 44px;
+  padding: 0.5rem 0.7rem;
+  font: inherit;
+  font-size: 1.05rem;
+  color: #fff;
+  background: #2a2a2a;
+  border: 1px solid #555;
+  border-radius: 10px;
+}
+
+.ed-campo textarea {
+  resize: vertical;
+}
+
+.ed-sezione {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.ed-passi {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 32dvh;
+  overflow-y: auto;
+}
+
+.ed-passi button {
+  width: 100%;
+  text-align: left;
+  font-weight: 500 !important;
+}
+
+.ed-passi button.selezionato {
+  background: #f2f2f2;
+  color: #1a1a1a;
+  font-weight: 700 !important;
+}
+
+.ed-passo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  border: 1px solid #3a3a3a;
+  border-radius: 14px;
+}
+
+.ed-aiuto {
+  font-size: 0.9rem;
+  opacity: 0.65;
+}
+
 /* === Schermo in verticale (telefono, iPad in verticale): campo sopra, pannello sotto === */
 @media (orientation: portrait) {
   #app {
@@ -568,5 +698,12 @@ body {
   /* lo scorrimento automatico verso la decisione tiene conto dei comandi fissi in fondo */
   .pannello {
     scroll-padding-bottom: 150px;
+  }
+}
+
+/* L'editor è solo per schermi grandi (iPad): sui telefoni i suoi pulsanti non compaiono */
+@media (max-width: 600px), (max-height: 600px) {
+  .solo-grande {
+    display: none !important;
   }
 }

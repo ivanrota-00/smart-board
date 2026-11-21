@@ -27,7 +27,12 @@ export interface ControlliGiocatori {
   distruggi(): void
 }
 
-export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): ControlliGiocatori {
+export function montaGiocatori(
+  svg: SVGSVGElement,
+  stato: StatoCampo,
+  /** Chiamata quando il dito lascia un giocatore o la palla dopo averli spostati (usata dall'editor). */
+  quandoLasci?: (stato: StatoCampo) => void,
+): ControlliGiocatori {
   let bloccato = false
   const strato = creaSvg('g', { class: 'strato-giocatori' })
   const elementi = new Map<string, SVGGElement>()
@@ -201,6 +206,9 @@ export function montaGiocatori(svg: SVGSVGElement, stato: StatoCampo): Controlli
       }
       if (vicino) stato.palla.inMano = vicino.id
       aggiornaPalla()
+    }
+    if (t.sollevato && quandoLasci) {
+      quandoLasci({ giocatori: stato.giocatori.map((g) => ({ ...g })), palla: { ...stato.palla } })
     }
   }
 

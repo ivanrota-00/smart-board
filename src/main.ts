@@ -4,10 +4,13 @@ import { VISTA } from './coordinate'
 import { disegnaCampo } from './campo'
 import { montaFrecce } from './frecce'
 import { montaGiocatori } from './giocatori'
+import { copiaSchema, idDaNome } from './editor/modello'
+import { montaEditor } from './editor/editor'
 import { montaLibreria } from './libreria'
 import { Player, VELOCITA } from './player'
 import { playbook } from './playbook'
 import type { Passo, Schema } from './schema'
+import type { StatoCampo } from './stato'
 import { creaSvg } from './svg'
 
 // App installabile e offline: il service worker si attiva solo nella versione pubblicata
@@ -50,15 +53,20 @@ let schema: Schema = (archivio.ultimo && archivio.trova(archivio.ultimo)) || pla
 let player = new Player(schema)
 player.velocita = archivio.velocita ?? 1
 const frecce = montaFrecce(stratoFrecce)
-let giocatori = montaGiocatori(svg, player.statoCampo())
-giocatori.blocca(true) // nel player non si trascina (tornerà con l'editor, Fase 9)
+// Quando il dito lascia un giocatore: lo gestisce l'editor (nel player il trascinamento è bloccato)
+const quandoLasci = (s: StatoCampo) => editor.quandoLasci(s)
+let giocatori = montaGiocatori(svg, player.statoCampo(), quandoLasci)
+giocatori.blocca(true) // nel player non si trascina; si trascina solo nell'editor
 
 // --- Pannello a destra ---------------------------------------------------------
 const pannello = document.createElement('aside')
 pannello.className = 'pannello'
 pannello.innerHTML = `
   <div class="intestazione">
-    <button type="button" id="apri-libreria" class="apri-libreria">📚 Libreria</button>
+    <div class="bottoni-testa">
+      <button type="button" id="apri-libreria" class="apri-libreria">📚 Libreria</button>
+      <button type="button" id="modifica" class="apri-libreria solo-grande">✏️ Modifica</button>
+    </div>
     <h1 id="nome"></h1>
   </div>
   <p class="premessa" id="premessa"></p>
@@ -259,14 +267,53 @@ function apriSchema(nuovo: Schema): void {
   archivio.ultimo = schema.id
   // giocatori nuovi (lo schema può averne di diversi)
   giocatori.distruggi()
-  giocatori = montaGiocatori(svg, player.statoCampo())
+  giocatori = montaGiocatori(svg, player.statoCampo(), quandoLasci)
   giocatori.blocca(true)
   passoMostrato = null
   mostraIntestazione()
   disegna()
 }
 
-const libreria = montaLibreria(app, archivio, apriSchema)
+// --- Editor (solo schermi grandi) ----------------------------------------------------
+const editor = montaEditor(app, {
+  archivio,
+  disegnaCampo(stato, passo) {
+    frecce.mostraPasso(stato, passo)
+    frecce.aggiorna(0)
+    giocatori.mostra(stato)
+    passoMostrato = null // al ritorno nel player si ridisegna tutto
+  },
+  trascinamento(attivo) {
+    giocatori.blocca(!attivo)
+  },
+  esci(modificato) {
+    pannello.hidden = false
+    apriSchema(modificato)
+  },
+})
+
+function avviaModifica(s: Schema): void {
+  player.pausa()
+  cancelAnimationFrame(animazione)
+  animazione = 0
+  let daModificare = s
+  if (archivio.ePredefinito(s.id)) {
+    const domanda = `"${s.nome}" fa parte del playbook della squadra.\nCreo una tua copia da modificare? (L'originale resta com'è.)`
+    if (!confirm(domanda)) return
+    daModificare = copiaSchema(s, idDaNome(`${s.nome} copia`, (id) => !!archivio.trova(id)), `${s.nome} (copia)`)
+    archivio.salva(daModificare)
+    apriSchema(daModificare)
+  }
+  pannello.hidden = true
+  editor.apri(daModificare)
+}
+
+$<HTMLButtonElement>('modifica').addEventListener('click', () => avviaModifica(schema))
+
+const libreria = montaLibreria(app, archivio, apriSchema, (nuovo) => {
+  apriSchema(nuovo)
+  avviaModifica(nuovo)
+})
 $<HTMLButtonElement>('apri-libreria').addEventListener('click', () => {
   player.pausa()
   disegna()

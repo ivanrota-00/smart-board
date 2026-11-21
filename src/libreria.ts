@@ -1,5 +1,6 @@
 // Schermata "Libreria": elenco schemi, apri, importa, esporta, elimina, backup.
 import { giorniFa, type Archivio } from './archivio'
+import { idDaNome, nuovoSchema } from './editor/modello'
 import { esportaJson, nomeFile } from './esporta'
 import { VERSIONE_SCHEMA, type Schema } from './schema'
 import { leggiImport, type FileBackup } from './valida'
@@ -12,6 +13,8 @@ export function montaLibreria(
   contenitore: HTMLElement,
   archivio: Archivio,
   quandoApri: (schema: Schema) => void,
+  /** Schema nuovo creato dalla Libreria (da aprire nell'editor). */
+  quandoNuovo?: (schema: Schema) => void,
 ): ControlliLibreria {
   const fondo = document.createElement('div')
   fondo.className = 'libreria-fondo'
@@ -24,6 +27,7 @@ export function montaLibreria(
       </header>
       <ul class="elenco"></ul>
       <div class="azioni-libreria">
+        <button type="button" class="nuovo solo-grande">➕ Nuovo schema</button>
         <button type="button" class="importa">⬇︎ Importa file JSON</button>
         <button type="button" class="backup">⬆︎ Esporta tutto (backup)</button>
         <p class="nota-backup"></p>
@@ -158,6 +162,17 @@ export function montaLibreria(
     if (e.target === fondo) chiudi() // tocco fuori dal riquadro
   })
   q('.importa').addEventListener('click', () => input.click())
+  q('.nuovo').addEventListener('click', () => {
+    const nome = prompt('Nome del nuovo schema:')?.trim()
+    if (!nome) return
+    const s = nuovoSchema(idDaNome(nome, (id) => !!archivio.trova(id)), nome)
+    if (!archivio.salva(s)) {
+      alert('Non riesco a salvare (memoria del browser non disponibile).')
+      return
+    }
+    chiudi()
+    quandoNuovo?.(s)
+  })
   input.addEventListener('change', () => {
     const file = input.files?.[0]
     input.value = '' // così si può reimportare lo stesso file
