@@ -4,7 +4,7 @@ Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
 - [ ] Ivan: attivare l'autenticazione a due fattori su GitHub (se non c'è già)
-- [ ] Ivan: Fase 8 — test in palestra e feedback scritto
+- [x] Fase 8 — test in palestra: successo (21/11/2026). Richiesta: versione per telefono (Android + iPhone)
 
 ## Pubblicazione + PWA
 - [x] Manifest, icone, service worker per l'offline

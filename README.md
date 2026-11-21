@@ -196,7 +196,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 5 | Player: play/pausa/passi/velocità + testo | Il Triangolo parte e si ferma | ✔️ |
 | 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ✔️ |
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ✔️ |
-| 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ⬜ |
+| 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ✔️ |
 | 9 | Editor (v0.2) | Crei uno schema nuovo da zero | ⬜ |
 | 10 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
 | 11 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | ✔️ parte PWA (installazione + offline); resta l'eventuale condivisione v0.4 |
@@ -380,6 +380,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **21/11/2026 — Fase 8:** test in palestra riuscito ("un successo"). Richiesta emersa: averlo anche sui **telefoni** (allenatori e giocatori, Android e iPhone), offline come un'app, come playbook.
 - **20/11/2026 — Sessione 1 (nonies):** corretto il service worker (doppioni nell'elenco) → offline verificato da Ivan sull'iPad.
 - **20/11/2026 — Sessione 1 (octies):** app installabile e offline (PWA), pubblicata su GitHub Pages con aggiornamento automatico; controllo di sicurezza; storia git ripulita (email anonima, niente PDF).
 - **20/11/2026 — Sessione 1 (septies):** Fase 7 — libreria, salvataggio locale, import/export JSON con controllo. 54 test.
