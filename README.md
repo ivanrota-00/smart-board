@@ -170,7 +170,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 - Modalità "registra": muovi i giocatori col dito e l'app registra i movimenti, poi li ripete
 - Lavagnetta libera (disegno a mano sopra il campo)
 
-### v0.4 — Condividere (⬜ opzionale: serve solo se i giocatori useranno l'app)
+### v0.4 — Condividere (in parte anticipato: telefono + playbook in Fase 9)
 - PWA installabile
 - Link/file da mandare ai giocatori (WhatsApp)
 - Esporta PDF stile quello di esempio (passi + testo)
@@ -197,9 +197,10 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 6 | Scelte A/B | Si arriva a B1/B2 e A1/A2/A3 come nel PDF | ✔️ |
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ✔️ |
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ✔️ |
-| 9 | Editor (v0.2) | Crei uno schema nuovo da zero | ⬜ |
-| 10 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
-| 11 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | ✔️ parte PWA (installazione + offline); resta l'eventuale condivisione v0.4 |
+| 9 | **Telefono + playbook** (Android e iPhone): layout per schermo piccolo, schemi della squadra dentro l'app | Un giocatore installa il link sul telefono e vede il playbook offline | ⬜ |
+| 10 | Editor (v0.2) | Crei uno schema nuovo da zero | ⬜ |
+| 11 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
+| 12 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | ✔️ parte PWA (installazione + offline); resta l'eventuale condivisione v0.4 |
 
 **Stima indicativa 🟡:** fasi 1–7 in circa 4–8 sessioni di lavoro; l'editor e la modalità dal vivo sono la parte più lunga. È una stima, non un impegno.
 
@@ -331,7 +332,7 @@ Non passare alla Fase 2 finché non te lo dico.
 | 19/11/2026 | Primo schema precaricato: Triangolo |
 | 19/11/2026 | **Dispositivo principale: iPad** (iPad 10ª generazione, Safari + PWA, solo dito, senza Apple Pencil) |
 | 19/11/2026 | **Nome: Smart Board.** Gli schemi li inserisce solo Ivan |
-| 19/11/2026 | **Solo uso di Ivan in palestra** (niente telefono/condivisione per ora) |
+| 19/11/2026 | ~~Solo uso di Ivan in palestra (niente telefono/condivisione per ora)~~ → superata il 21/11 |
 | 19/11/2026 | **Solo mezzo campo** (il campo intero esce dalle idee future) |
 | 19/11/2026 | Commit piccoli a ogni passo che funziona + commit di chiusura fase |
 | 19/11/2026 | `TODO.md` separato per i compiti pratici; il README resta il documento principale |
@@ -356,6 +357,9 @@ Non passare alla Fase 2 finché non te lo dico.
 | 20/11/2026 | Commit firmati con l'email anonima di GitHub (`…@users.noreply.github.com`) |
 | 20/11/2026 | Service worker scritto a mano (niente plugin): pagina "prima la rete", file dell'app "prima la copia salvata" |
 | 20/11/2026 | GitHub CLI (`gh`) installato in `~/.local/bin` (binario ufficiale, checksum verificato) per login e pubblicazione |
+| 21/11/2026 | **App anche su telefono** (allenatori e giocatori, Android e iPhone), offline come un'app. Motivo: richiesta emersa dal test in palestra |
+| 21/11/2026 | **Playbook dentro l'app**: gli schemi della squadra fanno parte dell'app pubblicata (aggiornamenti automatici). Accettato che chi ha il link possa vederli (sito pubblico). Niente nomi dei giocatori nell'app |
+| 21/11/2026 | Ordine: prima telefono (nuova Fase 9), poi editor (Fase 10) |
 | 19/11/2026 | Palla: segue chi la ha; trascinata e lasciata entro 1 m da un attaccante passa a lui, altrimenti resta libera |
 
 ### Conseguenze della scelta iPad (🟡 = da verificare su iPad vero)
@@ -371,7 +375,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 12. Domande aperte
 
-1. ~~Per chi è~~ → **per ora solo Ivan in palestra, su iPad** ✔️ (niente layout da telefono né condivisione ai giocatori nell'MVP; rivalutabile dopo la fase 8)
+1. ~~Per chi è~~ → **Ivan su iPad in palestra** + dal 21/11 **allenatori e giocatori su telefono** (Android e iPhone) come playbook ✔️
 2. ~~Dispositivo principale~~ → **iPad** ✔️
 3. ~~Campo intero o mezzo~~ → **solo mezzo campo** ✔️
 4. ~~Chi inserisce gli schemi~~ → **tu** ✔️ (niente account/ruoli: un solo autore)
@@ -397,5 +401,4 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. **Fase 8: test con la squadra** in palestra → feedback scritto (cosa capiscono i giocatori, cosa manca, cosa è scomodo).
-2. Tornare con il feedback → piano della Fase 9 (editor), solo dopo l'OK.
+1. Fase 9: telefono + playbook — piano proposto, in attesa dell'OK.

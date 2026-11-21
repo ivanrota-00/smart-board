@@ -3,6 +3,8 @@
 Compiti pratici. Il piano completo è nel README (§7).
 
 ## Da fare ora
+- [ ] Ivan: dare l'OK al piano della Fase 9 (telefono + playbook)
+- [ ] Trovare un telefono Android per la prova (tuo o di un giocatore)
 - [ ] Ivan: attivare l'autenticazione a due fattori su GitHub (se non c'è già)
 - [x] Fase 8 — test in palestra: successo (21/11/2026). Richiesta: versione per telefono (Android + iPhone)
 
