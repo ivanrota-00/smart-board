@@ -198,7 +198,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ✔️ |
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ✔️ |
 | 9 | **Telefono + playbook** (Android e iPhone): layout per schermo piccolo, schemi della squadra dentro l'app | Un giocatore installa il link sul telefono e vede il playbook offline | ✔️ |
-| 10 | Editor (v0.2) | Crei uno schema nuovo da zero | 🟡 10a e 10b pubblicate (da provare su iPad); 10c da fare |
+| 10 | Editor (v0.2) | Crei uno schema nuovo da zero | 🟡 10a, 10b, 10c pubblicate; manca la prova completa di Ivan su iPad |
 | 11 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
 | 12 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | ✔️ parte PWA (installazione + offline); resta l'eventuale condivisione v0.4 |
 
@@ -348,6 +348,15 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato: 82 test; build; **tocchi simulati in WebKit**: taglio a 2 punti, passaggio 1 → 3, selezione freccia con maniglie, uscita e salto a fine passo (2 sotto canestro, palla al 3). Trovato e corretto: l'elenco passi spariva quando il pannello diventava lungo
   - 🟡 da verificare da Ivan su iPad: tutto col dito vero, trascinamento maniglie, animazione (nelle foto WebKit l'animazione non gira: finestra invisibile)
 
+- 🟡 **Fase 10c (pubblicata):** scelte, specchia, difesa
+  - Nel passo: "🔀 Aggiungi una scelta (A/B)": se il passo aveva un seguito diventa il ramo A, il ramo B parte vuoto. Domanda modificabile, nomi delle opzioni, "Vai al ramo →", 🗑 opzione (cancella anche i passi del suo ramo; con una sola opzione rimasta torna un seguito normale), "➕ Opzione" (max 4), "Togli la scelta"
+  - Elenco passi con il ramo davanti: [A], [B › Libero]…
+  - "⇆ Specchia" (destra ↔ sinistra, i testi non cambiano)
+  - Player: pulsante "🛡 Difesa / Senza difesa" (anche su telefono), ricordato sul dispositivo; nell'editor la difesa si vede sempre
+  - Logica in `src/editor/scelte.ts` (9 test)
+  - ✅ verificato: 91 test; build; foto WebKit con tocchi simulati (scelta nel Triangolo, schema nuovo con scelta + opzione C, specchia, difesa nascosta su iPad e telefono). Corretti: nomi opzioni tagliati, pulsanti in alto che andavano a capo
+  - 🟡 da verificare da Ivan su iPad
+
 **Aggiornamenti per chi ha l'app:** non serve ridare il link. Le modifiche pubblicate arrivano la prossima volta che aprono l'app **con la rete** (a volte serve chiuderla del tutto e riaprirla). Offline vedono l'ultima versione ricevuta. Arrivano a tutti solo gli schemi del **playbook** (`src/schemi`); quelli creati/modificati sul tuo iPad restano lì finché non li carichi nel playbook.
 
 **Aggiungere uno schema al playbook:** (1) in Libreria tocca "Esporta" sullo schema → file `.json`; (2) passalo a Claude Code, oppure su github.com/ivanrota-00/smart-board apri la cartella `src/schemi` → "Add file" → "Upload files" → trascina il file → "Commit changes". In ~1 minuto GitHub controlla il file e aggiorna l'app di tutti (se il file è sbagliato non pubblica e manda un'email).
@@ -394,6 +403,8 @@ Non passare alla Fase 2 finché non te lo dico.
 | 21/11/2026 | Telefono: layout solo con CSS (media query), nessuna libreria; manifest con orientamento "any" |
 | 21/11/2026 | Editor solo su schermi grandi (iPad): sui telefoni "Modifica" e "Nuovo schema" non compaiono (app dei giocatori semplice) |
 | 21/11/2026 | Editor: tempi delle azioni automatici ("dopo la precedente" / "insieme"), niente secondi (10b) |
+| 22/11/2026 | "Quando parte?" con due bottoni (Dopo le altre / Insieme all'ultima) al posto della casella |
+| 22/11/2026 | Eliminare un'opzione cancella anche i passi del suo ramo (con conferma); "Specchia" vale per tutto lo schema |
 | 21/11/2026 | Editor diviso in 10a (base), 10b (disegno azioni), 10c (scelte, specchia, mostra/nascondi difesa) |
 | 21/11/2026 | Playbook come file JSON in `src/schemi/` (invece che codice TypeScript): si aggiunge uno schema caricando un file, anche dal sito di GitHub |
 | 19/11/2026 | Palla: segue chi la ha; trascinata e lasciata entro 1 m da un attaccante passa a lui, altrimenti resta libera |
@@ -420,6 +431,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **22/11/2026 — Fase 10c:** scelte A/B nell'editor, specchia schema, mostra/nascondi difesa. 91 test. Editor completo, in attesa della prova di Ivan.
 - **22/11/2026 — Fix 10b:** "Insieme all'azione precedente" sostituita da due bottoni grandi; spiegazione sulla prima azione del passo.
 - **22/11/2026 — Fase 10b:** disegno delle azioni a tocchi, maniglie, tempi automatici. 82 test.
 - **21/11/2026 — Fase 10a:** editor base su iPad (nuovo schema, modifica/copia, passi, testi, posizioni iniziali, annulla/ripeti). 72 test.
@@ -442,5 +454,6 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Ivan prova 10a + 10b sull'iPad (crea uno schema da zero con qualche azione e lo riproduce).
-2. Poi 10c: scelte A/B, specchia schema, mostra/nascondi difesa.
+1. Ivan prova l'editor completo sull'iPad (10a + 10b + 10c) → chiudere la Fase 10.
+2. Poi Fase 11: modalità dal vivo (v0.3) — piano da proporre.
+3. Facoltativo: caricare nel playbook gli schemi nuovi creati con l'editor.
