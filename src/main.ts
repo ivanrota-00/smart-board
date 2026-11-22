@@ -3,7 +3,7 @@ import { Archivio } from './archivio'
 import { VISTA } from './coordinate'
 import { disegnaCampo } from './campo'
 import { montaFrecce } from './frecce'
-import { montaGiocatori } from './giocatori'
+import { montaGiocatori, type Tocco } from './giocatori'
 import { copiaSchema, idDaNome } from './editor/modello'
 import { montaEditor } from './editor/editor'
 import { montaLibreria } from './libreria'
@@ -55,7 +55,8 @@ player.velocita = archivio.velocita ?? 1
 const frecce = montaFrecce(stratoFrecce)
 // Quando il dito lascia un giocatore: lo gestisce l'editor (nel player il trascinamento è bloccato)
 const quandoLasci = (s: StatoCampo) => editor.quandoLasci(s)
-let giocatori = montaGiocatori(svg, player.statoCampo(), quandoLasci)
+const quandoTocchi = (t: Tocco) => editor.quandoTocchi(t)
+let giocatori = montaGiocatori(svg, player.statoCampo(), quandoLasci, quandoTocchi)
 giocatori.blocca(true) // nel player non si trascina; si trascina solo nell'editor
 
 // --- Pannello a destra ---------------------------------------------------------
@@ -267,7 +268,7 @@ function apriSchema(nuovo: Schema): void {
   archivio.ultimo = schema.id
   // giocatori nuovi (lo schema può averne di diversi)
   giocatori.distruggi()
-  giocatori = montaGiocatori(svg, player.statoCampo(), quandoLasci)
+  giocatori = montaGiocatori(svg, player.statoCampo(), quandoLasci, quandoTocchi)
   giocatori.blocca(true)
   passoMostrato = null
   mostraIntestazione()
@@ -277,14 +278,24 @@ function apriSchema(nuovo: Schema): void {
 // --- Editor (solo schermi grandi) ----------------------------------------------------
 const editor = montaEditor(app, {
   archivio,
+  svg,
   disegnaCampo(stato, passo) {
     frecce.mostraPasso(stato, passo)
     frecce.aggiorna(0)
     giocatori.mostra(stato)
     passoMostrato = null // al ritorno nel player si ridisegna tutto
   },
-  trascinamento(attivo) {
-    giocatori.blocca(!attivo)
+  modalitaGiocatori(m) {
+    giocatori.modalita(m)
+  },
+  evidenziaGiocatore(id) {
+    giocatori.evidenzia(id)
+  },
+  trovaFreccia(p) {
+    return frecce.trova(p)
+  },
+  evidenziaFreccia(i) {
+    frecce.evidenzia(i)
   },
   esci(modificato) {
     pannello.hidden = false

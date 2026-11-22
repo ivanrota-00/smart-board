@@ -425,9 +425,23 @@ textarea {
   user-select: text;
 }
 
+/* Frecce nell'editor: quella selezionata risalta, le altre si attenuano */
+.freccia.attenuata {
+  opacity: 0.3;
+}
+
+.freccia.selezionata {
+  filter: drop-shadow(0 0 0.12px #ffd400) drop-shadow(0 0 0.12px #ffd400);
+}
+
 /* --- Editor ----------------------------------------------------------------- */
 .pannello-editor {
   gap: 0.8rem;
+}
+
+/* il pannello scorre: le sue parti non devono schiacciarsi (altrimenti l'elenco passi sparisce) */
+.pannello-editor > * {
+  flex-shrink: 0;
 }
 
 .ed-testa,
@@ -531,6 +545,71 @@ textarea {
   padding: 0.8rem;
   border: 1px solid #3a3a3a;
   border-radius: 14px;
+}
+
+.ed-azioni {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  border: 1px solid #3a3a3a;
+  border-radius: 14px;
+}
+
+.ed-azioni p {
+  margin: 0;
+}
+
+.ed-titoletto {
+  font-weight: 700;
+  font-size: 1.05rem;
+  opacity: 1 !important;
+}
+
+.ed-istruzione,
+.ed-vuoto {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.ed-griglia {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.ed-elenco-azioni {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ed-elenco-azioni button {
+  width: 100%;
+  text-align: left;
+  font-weight: 500 !important;
+}
+
+.pannello-editor .ed-principale {
+  background: #e8692c;
+  border-color: #e8692c;
+}
+
+.ed-casella {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-size: 1rem;
+}
+
+.ed-casella input {
+  width: 26px;
+  height: 26px;
+  accent-color: #e8692c;
 }
 
 .ed-aiuto {

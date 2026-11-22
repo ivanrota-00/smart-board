@@ -23,17 +23,27 @@ export interface ControlliGiocatori {
   mostra(nuovo: StatoCampo): void
   /** true = il dito non può trascinare (es. durante l'animazione) */
   blocca(bloccato: boolean): void
+  /** bloccato = niente; tocco = si può solo toccare (selezionare); trascina = tocco + trascinamento */
+  modalita(m: ModalitaDito): void
+  /** Anello giallo attorno a un giocatore (null = nessuno). */
+  evidenzia(id: string | null): void
   /** Toglie giocatori, palla e ascoltatori dal campo (es. quando si cambia schema). */
   distruggi(): void
 }
+
+export type ModalitaDito = 'bloccato' | 'tocco' | 'trascina'
+export type Tocco = { tipo: 'giocatore'; id: string } | { tipo: 'palla' }
 
 export function montaGiocatori(
   svg: SVGSVGElement,
   stato: StatoCampo,
   /** Chiamata quando il dito lascia un giocatore o la palla dopo averli spostati (usata dall'editor). */
   quandoLasci?: (stato: StatoCampo) => void,
+  /** Chiamata quando il dito tocca (senza spostare) un giocatore o la palla (usata dall'editor). */
+  quandoTocchi?: (cosa: Tocco) => void,
 ): ControlliGiocatori {
-  let bloccato = false
+  let modo: ModalitaDito = 'trascina'
+  const anelliSelezione = new Map<string, SVGCircleElement>()
   const strato = creaSvg('g', { class: 'strato-giocatori' })
   const elementi = new Map<string, SVGGElement>()
   const anelliPalla = new Map<string, SVGCircleElement>()
@@ -72,6 +82,15 @@ export function montaGiocatori(
         }),
       )
     }
+    const selezione = creaSvg('circle', {
+      r: RAGGIO_GIOCATORE + 0.3,
+      fill: 'none',
+      stroke: '#ffd400',
+      'stroke-width': 0.12,
+      display: 'none',
+    })
+    anelliSelezione.set(g.id, selezione)
+    el.append(selezione)
     const testo = creaSvg('text', {
       'text-anchor': 'middle',
       'dominant-baseline': 'central',
@@ -137,12 +156,12 @@ export function montaGiocatori(
   }
 
   function inizia(e: PointerEvent, t: Pick<Trascinamento, 'tipo' | 'giocatore'>): void {
-    if (bloccato || giaInMovimento(t)) return
+    if (modo === 'bloccato' || giaInMovimento(t)) return
     e.preventDefault()
     e.stopPropagation()
     const dito = schermoAMetri(svg, e.clientX, e.clientY)
     const origine = t.tipo === 'palla' ? posizionePalla() : { x: t.giocatore!.x, y: t.giocatore!.y }
-    if (t.tipo === 'palla') {
+    if (t.tipo === 'palla' && modo === 'trascina') {
       // la palla si stacca da chi la aveva e diventa libera mentre la sposti
       stato.palla = { inMano: null, x: origine.x, y: origine.y }
     }
@@ -162,7 +181,7 @@ export function montaGiocatori(
     const dx = dito.x - t.dito.x
     const dy = dito.y - t.dito.y
     if (!t.sollevato && Math.hypot(dx, dy) > SOGLIA_MOVIMENTO) t.sollevato = true
-    if (!t.sollevato) return
+    if (!t.sollevato || modo !== 'trascina') return
 
     if (t.tipo === 'giocatore' && t.giocatore) {
       const p = limitaAllaVista(
@@ -191,7 +210,24 @@ export function montaGiocatori(
     const el = t.tipo === 'palla' ? palla : elementi.get(t.giocatore!.id)
     el?.classList.remove('in-trascinamento')
 
-    if (t.tipo === 'palla') {
+    if (!t.sollevato || modo !== 'trascina') {
+      // È stato un tocco: niente spostamento
+      if (t.tipo === 'palla' && modo === 'trascina') {
+        // la palla si era staccata all'inizio: torna a chi è più vicino (di solito chi l'aveva)
+        riassegnaPalla()
+      }
+      quandoTocchi?.(t.tipo === 'palla' ? { tipo: 'palla' } : { tipo: 'giocatore', id: t.giocatore!.id })
+      return
+    }
+
+    if (t.tipo === 'palla') riassegnaPalla()
+    if (quandoLasci) {
+      quandoLasci({ giocatori: stato.giocatori.map((g) => ({ ...g })), palla: { ...stato.palla } })
+    }
+  }
+
+  function riassegnaPalla(): void {
+    {
       // Palla lasciata vicino a un attaccante → la prende lui
       const p = { x: stato.palla.x, y: stato.palla.y }
       let vicino: Giocatore | null = null
@@ -206,9 +242,6 @@ export function montaGiocatori(
       }
       if (vicino) stato.palla.inMano = vicino.id
       aggiornaPalla()
-    }
-    if (t.sollevato && quandoLasci) {
-      quandoLasci({ giocatori: stato.giocatori.map((g) => ({ ...g })), palla: { ...stato.palla } })
     }
   }
 
@@ -236,8 +269,15 @@ export function montaGiocatori(
       strato.remove()
       palla.remove()
     },
+    evidenzia(id) {
+      for (const [gid, c] of anelliSelezione) c.setAttribute('display', gid === id ? 'inline' : 'none')
+    },
+    modalita(m) {
+      this.blocca(m === 'bloccato')
+      modo = m
+    },
     blocca(b) {
-      bloccato = b
+      modo = b ? 'bloccato' : 'trascina'
       if (b) {
         // interrompe eventuali trascinamenti in corso
         for (const t of attivi.values()) {

@@ -26,6 +26,25 @@ const DISSOLVENZA = 0.4 // secondi: quanto ci mette una freccia a sparire a fine
 interface FrecciaDisegnata {
   el: SVGGElement
   fine: number // secondo in cui finisce l'azione
+  linea: Punto[] // per capire se il dito l'ha toccata
+  indice: number // posizione dell'azione nel passo
+}
+
+const DISTANZA_TOCCO = 0.5 // metri: un tocco entro questa distanza dalla linea seleziona la freccia
+
+/** Distanza di un punto da una spezzata. */
+function distanzaDaLinea(p: Punto, linea: Punto[]): number {
+  let min = Infinity
+  for (let i = 1; i < linea.length; i++) {
+    const a = linea[i - 1]
+    const b = linea[i]
+    const dx = b.x - a.x
+    const dy = b.y - a.y
+    const l2 = dx * dx + dy * dy
+    const t = l2 === 0 ? 0 : Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / l2))
+    min = Math.min(min, Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy)))
+  }
+  return min
 }
 
 export interface ControlliFrecce {
@@ -33,6 +52,10 @@ export interface ControlliFrecce {
   mostraPasso(inizio: StatoCampo, passo: Passo): void
   /** Aggiorna la visibilità al secondo t (le frecce delle azioni finite spariscono). */
   aggiorna(t: number): void
+  /** Indice dell'azione la cui freccia passa vicino al punto toccato (null = nessuna). */
+  trova(p: Punto): number | null
+  /** Mette in risalto una freccia e attenua le altre (null = tutte normali). */
+  evidenzia(indice: number | null): void
 }
 
 const d = (punti: Punto[]) =>
@@ -116,8 +139,8 @@ export function montaFrecce(strato: SVGGElement): ControlliFrecce {
     mostraPasso(inizio, passo) {
       strato.replaceChildren()
       disegnate = []
-      for (const a of passo.azioni) {
-        if (a.tipo === 'spostamento') continue
+      passo.azioni.forEach((a, indice) => {
+        if (a.tipo === 'spostamento') return
         let linea: Punto[]
         if (eMovimento(a)) {
           const partenza = posizioneAlTempo(inizio, passo, a.giocatore, a.inizio)
@@ -128,10 +151,28 @@ export function montaFrecce(strato: SVGGElement): ControlliFrecce {
           const ad = posizioneAlTempo(inizio, passo, a.a, a.inizio + a.durata)
           linea = accorcia([da, ad], STACCO_GIOCATORE, STACCO_GIOCATORE)
         }
-        if (linea.length < 2) continue
+        if (linea.length < 2) return
         const el = disegnaFreccia(a.tipo, linea)
         strato.append(el)
-        disegnate.push({ el, fine: a.inizio + a.durata })
+        disegnate.push({ el, fine: a.inizio + a.durata, linea, indice })
+      })
+    },
+    trova(p) {
+      let migliore: FrecciaDisegnata | null = null
+      let min = DISTANZA_TOCCO
+      for (const f of disegnate) {
+        const d = distanzaDaLinea(p, f.linea)
+        if (d < min) {
+          min = d
+          migliore = f
+        }
+      }
+      return migliore ? migliore.indice : null
+    },
+    evidenzia(indice) {
+      for (const f of disegnate) {
+        f.el.classList.toggle('selezionata', indice !== null && f.indice === indice)
+        f.el.classList.toggle('attenuata', indice !== null && f.indice !== indice)
       }
     },
     aggiorna(t) {
