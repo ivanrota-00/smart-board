@@ -198,7 +198,7 @@ Il cuore del progetto. Un **Schema** è un grafo di **Passi**.
 | 7 | Libreria + salvataggio + import/export JSON | Ricarichi la pagina e lo schema c'è | ✔️ |
 | 8 | **Test con la tua squadra** (iPad/telefono) | Un allenamento reale, feedback scritto | ✔️ |
 | 9 | **Telefono + playbook** (Android e iPhone): layout per schermo piccolo, schemi della squadra dentro l'app | Un giocatore installa il link sul telefono e vede il playbook offline | ✔️ |
-| 10 | Editor (v0.2) | Crei uno schema nuovo da zero | 🟡 10a pubblicata (da provare su iPad); 10b e 10c da fare |
+| 10 | Editor (v0.2) | Crei uno schema nuovo da zero | 🟡 10a e 10b pubblicate (da provare su iPad); 10c da fare |
 | 11 | Modalità dal vivo (v0.3) | Registri e riproduci | ⬜ |
 | 12 | PWA installata su iPad (offline) + condivisione opzionale (v0.4) | Installato sull'iPad, funziona senza Wi-Fi in palestra | ✔️ parte PWA (installazione + offline); resta l'eventuale condivisione v0.4 |
 
@@ -338,6 +338,15 @@ Non passare alla Fase 2 finché non te lo dico.
   - ✅ verificato: 72 test; build; foto WebKit di editor (Triangolo copia, passo nei rami, nuovo schema + passo) e telefono senza "Modifica"
   - 🟡 da verificare da Ivan su iPad: trascinamento nell'editor, tastiera nei campi di testo, annulla/ripeti
 
+- 🟡 **Fase 10b (pubblicata):** disegnare le azioni
+  - Tocca un giocatore → menu (attaccante: Taglio, Palleggio, Blocco, Passaggio, Hand-off, Spostamento; difensore: Spostamento). Palleggio/passaggio/hand-off solo se ha la palla in quel momento
+  - Percorso: tocchi sul campo uno dopo l'altro (anteprima gialla), "✓ Fine percorso", "↩ Togli punto"; toccare un giocatore mentre disegni mette un punto lì. Passaggio/hand-off: tocca chi riceve
+  - Tocca una freccia (o la riga nell'elenco "Azioni del passo") → maniglie gialle da trascinare, "Insieme all'azione precedente", "🗑 Elimina azione"
+  - Tempi automatici: durata dalla lunghezza (taglio 4,2 m/s, palleggio 3,4, blocco 3,2, spostamento 3,8; passaggio 0,5–1,1 s; hand-off 0,5 s); "dopo" = quando finisce tutto il resto, "insieme" = parte con l'ultima azione
+  - Logica in `src/editor/azioni.ts` (10 test). Giocatori: nuova modalità "tocco" + anello giallo di selezione; frecce: si possono toccare ed evidenziare
+  - ✅ verificato: 82 test; build; **tocchi simulati in WebKit**: taglio a 2 punti, passaggio 1 → 3, selezione freccia con maniglie, uscita e salto a fine passo (2 sotto canestro, palla al 3). Trovato e corretto: l'elenco passi spariva quando il pannello diventava lungo
+  - 🟡 da verificare da Ivan su iPad: tutto col dito vero, trascinamento maniglie, animazione (nelle foto WebKit l'animazione non gira: finestra invisibile)
+
 **Aggiornamenti per chi ha l'app:** non serve ridare il link. Le modifiche pubblicate arrivano la prossima volta che aprono l'app **con la rete** (a volte serve chiuderla del tutto e riaprirla). Offline vedono l'ultima versione ricevuta. Arrivano a tutti solo gli schemi del **playbook** (`src/schemi`); quelli creati/modificati sul tuo iPad restano lì finché non li carichi nel playbook.
 
 **Aggiungere uno schema al playbook:** (1) in Libreria tocca "Esporta" sullo schema → file `.json`; (2) passalo a Claude Code, oppure su github.com/ivanrota-00/smart-board apri la cartella `src/schemi` → "Add file" → "Upload files" → trascina il file → "Commit changes". In ~1 minuto GitHub controlla il file e aggiorna l'app di tutti (se il file è sbagliato non pubblica e manda un'email).
@@ -410,6 +419,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **22/11/2026 — Fase 10b:** disegno delle azioni a tocchi, maniglie, tempi automatici. 82 test.
 - **21/11/2026 — Fase 10a:** editor base su iPad (nuovo schema, modifica/copia, passi, testi, posizioni iniziali, annulla/ripeti). 72 test.
 - **21/11/2026 — Fase 9 chiusa:** verificata da Ivan su iPhone e Android.
 - **21/11/2026 — Fase 9:** layout per telefono, playbook da file JSON, Libreria divisa + versione, avviso di installazione. Verificato con foto WebKit a varie misure. 57 test.
@@ -430,6 +440,5 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 14. Prossimi passi
 
-1. Ivan prova la 10a sull'iPad.
-2. Poi 10b: disegnare le azioni a tocchi (taglio, palleggio, blocco, passaggio, hand-off, spostamento), maniglie per correggere, tempi automatici.
-3. Poi 10c: scelte A/B, specchia, mostra/nascondi difesa.
+1. Ivan prova 10a + 10b sull'iPad (crea uno schema da zero con qualche azione e lo riproduce).
+2. Poi 10c: scelte A/B, specchia schema, mostra/nascondi difesa.
