@@ -27,6 +27,8 @@ export interface ControlliGiocatori {
   modalita(m: ModalitaDito): void
   /** Anello giallo attorno a un giocatore (null = nessuno). */
   evidenzia(id: string | null): void
+  /** Mostra o nasconde i difensori. */
+  mostraDifesa(visibile: boolean): void
   /** Toglie giocatori, palla e ascoltatori dal campo (es. quando si cambia schema). */
   distruggi(): void
 }
@@ -268,6 +270,10 @@ export function montaGiocatori(
       attivi.clear()
       strato.remove()
       palla.remove()
+    },
+    mostraDifesa(visibile) {
+      for (const g of stato.giocatori)
+        if (g.squadra === 'dif') elementi.get(g.id)?.setAttribute('display', visibile ? 'inline' : 'none')
     },
     evidenzia(id) {
       for (const [gid, c] of anelliSelezione) c.setAttribute('display', gid === id ? 'inline' : 'none')

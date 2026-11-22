@@ -66,6 +66,7 @@ pannello.innerHTML = `
   <div class="intestazione">
     <div class="bottoni-testa">
       <button type="button" id="apri-libreria" class="apri-libreria">📚 Libreria</button>
+      <button type="button" id="difesa" class="apri-libreria" aria-pressed="true">🛡 Difesa</button>
       <button type="button" id="modifica" class="apri-libreria solo-grande">✏️ Modifica</button>
     </div>
     <h1 id="nome"></h1>
@@ -270,6 +271,7 @@ function apriSchema(nuovo: Schema): void {
   giocatori.distruggi()
   giocatori = montaGiocatori(svg, player.statoCampo(), quandoLasci, quandoTocchi)
   giocatori.blocca(true)
+  applicaDifesa()
   passoMostrato = null
   mostraIntestazione()
   disegna()
@@ -316,8 +318,23 @@ function avviaModifica(s: Schema): void {
     apriSchema(daModificare)
   }
   pannello.hidden = true
+  giocatori.mostraDifesa(true) // nell'editor la difesa si vede sempre
   editor.apri(daModificare)
 }
+
+// --- Mostra/nascondi difesa (ricordato sul dispositivo) ----------------------------
+const btnDifesa = $<HTMLButtonElement>('difesa')
+function applicaDifesa(): void {
+  const si = archivio.difesa
+  giocatori.mostraDifesa(si)
+  btnDifesa.setAttribute('aria-pressed', String(si))
+  btnDifesa.textContent = si ? '🛡 Difesa' : '🛡 Senza difesa'
+}
+btnDifesa.addEventListener('click', () => {
+  archivio.difesa = !archivio.difesa
+  applicaDifesa()
+})
+applicaDifesa()
 
 $<HTMLButtonElement>('modifica').addEventListener('click', () => avviaModifica(schema))
 

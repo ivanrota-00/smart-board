@@ -31,6 +31,16 @@ import {
   statoInizioDi,
   type Esito,
 } from './modello'
+import {
+  aggiungiOpzione,
+  aggiungiScelta,
+  eliminaScelta,
+  modificaDomanda,
+  modificaScelta,
+  ramiDeiPassi,
+  specchiaSchema,
+  togliScelta,
+} from './scelte'
 import { Storia } from './storia'
 
 export interface DipendenzeEditor {
@@ -83,6 +93,7 @@ export function montaEditor(contenitore: HTMLElement, dip: DipendenzeEditor): Co
       <button type="button" class="ed-fine">✓ Fine</button>
       <button type="button" class="ed-annulla" aria-label="Annulla">↶ Annulla</button>
       <button type="button" class="ed-ripeti" aria-label="Ripeti">↷ Ripeti</button>
+      <button type="button" class="ed-specchia">⇆ Specchia</button>
     </div>
     <label class="ed-campo">Nome dello schema
       <input type="text" class="ed-nome" autocomplete="off" />
@@ -101,6 +112,7 @@ export function montaEditor(contenitore: HTMLElement, dip: DipendenzeEditor): Co
         <button type="button" class="ed-duplica">⧉ Duplica</button>
         <button type="button" class="ed-elimina pericolo">🗑 Elimina</button>
       </div>
+      <div class="ed-scelta"></div>
     </div>
     <p class="ed-sezione">Azioni del passo</p>
     <div class="ed-azioni"></div>
@@ -120,6 +132,8 @@ export function montaEditor(contenitore: HTMLElement, dip: DipendenzeEditor): Co
     aggiungi: q<HTMLButtonElement>('.ed-aggiungi'),
     duplica: q<HTMLButtonElement>('.ed-duplica'),
     elimina: q<HTMLButtonElement>('.ed-elimina'),
+    specchia: q<HTMLButtonElement>('.ed-specchia'),
+    scelta: q<HTMLDivElement>('.ed-scelta'),
     azioni: q<HTMLDivElement>('.ed-azioni'),
     aiuto: q<HTMLParagraphElement>('.ed-aiuto'),
   }
@@ -328,14 +342,79 @@ export function montaEditor(contenitore: HTMLElement, dip: DipendenzeEditor): Co
     disegna()
   }
 
+  /** Riquadro della scelta alla fine del passo: domanda, opzioni, rami. */
+  function disegnaScelta(): void {
+    const p = passoSel()
+    const figli: HTMLElement[] = []
+    if (!p.scelte?.length) {
+      figli.push(bottone('🔀 Aggiungi una scelta (A/B) alla fine del passo', () => applicaEsito(aggiungiScelta(schema!, p.id))))
+    } else {
+      figli.push(testoP('Scelta alla fine del passo', 'ed-titoletto'))
+      const domanda = document.createElement('textarea')
+      domanda.rows = 2
+      domanda.value = p.domanda ?? ''
+      domanda.placeholder = 'Domanda (es. Decisione 1: passare al 5 o all’1?)'
+      domanda.addEventListener('focus', () => storia.registra(schema!))
+      domanda.addEventListener('input', () => {
+        schema = modificaDomanda(schema!, p.id, domanda.value)
+        salva()
+      })
+      const etDomanda = document.createElement('label')
+      etDomanda.className = 'ed-campo'
+      etDomanda.append('Domanda', domanda)
+      figli.push(etDomanda)
+      p.scelte.forEach((sc, i) => {
+        const riga = document.createElement('div')
+        riga.className = 'ed-opzione'
+        const input = document.createElement('input')
+        input.type = 'text'
+        input.value = sc.etichetta
+        input.setAttribute('aria-label', `Opzione ${i + 1}`)
+        input.addEventListener('focus', () => storia.registra(schema!))
+        input.addEventListener('input', () => {
+          schema = modificaScelta(schema!, p.id, i, input.value)
+          salva()
+          disegnaElenco()
+        })
+        riga.append(
+          input,
+          bottone('Vai al ramo →', () => {
+            selezionato = sc.vaiA
+            strumento = { tipo: 'niente' }
+            disegna()
+          }),
+          bottone('🗑', () => {
+            if (!confirm(`Eliminare l’opzione "${sc.etichetta}" e tutti i passi del suo ramo?`)) return
+            applicaEsito(eliminaScelta(schema!, p.id, i))
+          }, 'pericolo'),
+        )
+        figli.push(riga)
+      })
+      const piu = bottone('➕ Opzione', () => applicaEsito(aggiungiOpzione(schema!, p.id)))
+      piu.disabled = p.scelte.length >= 4
+      figli.push(
+        riga(
+          piu,
+          bottone('Togli la scelta', () => {
+            if (!confirm('Togliere la scelta e TUTTI i passi dei suoi rami?')) return
+            applicaEsito(togliScelta(schema!, p.id))
+          }, 'pericolo'),
+        ),
+      )
+    }
+    el.scelta.replaceChildren(...figli)
+  }
+
   function disegnaElenco(): void {
     const ordine = ordinePassi(schema!)
+    const rami = ramiDeiPassi(schema!)
     el.passi.replaceChildren(
       ...ordine.map((p, i) => {
         const li = document.createElement('li')
+        const ramo = rami.get(p.id)
         li.append(
           bottone(
-            `${i + 1}. ${p.titolo || '(senza titolo)'}${p.scelte?.length ? ' · scelta' : ''}`,
+            `${ramo ? `[${ramo}] ` : ''}${i + 1}. ${p.titolo || '(senza titolo)'}${p.scelte?.length ? ' · 🔀 scelta' : ''}`,
             () => {
               selezionato = p.id
               strumento = { tipo: 'niente' }
@@ -401,6 +480,7 @@ export function montaEditor(contenitore: HTMLElement, dip: DipendenzeEditor): Co
     if (document.activeElement !== el.titolo) el.titolo.value = p.titolo
     if (document.activeElement !== el.testo) el.testo.value = p.testo
     disegnaElenco()
+    disegnaScelta()
     disegnaAzioni()
     el.annulla.disabled = !storia.puoAnnullare
     el.ripeti.disabled = !storia.puoRipetere
@@ -504,6 +584,10 @@ export function montaEditor(contenitore: HTMLElement, dip: DipendenzeEditor): Co
     salva()
     disegna()
   }
+  el.specchia.addEventListener('click', () => {
+    if (!confirm('Specchiare tutto lo schema (destra ↔ sinistra)? I testi non cambiano.')) return
+    applica(specchiaSchema(schema!))
+  })
   el.annulla.addEventListener('click', () => cambiaVersione(storia.annulla(schema!)))
   el.ripeti.addEventListener('click', () => cambiaVersione(storia.ripeti(schema!)))
   el.fine.addEventListener('click', () => {

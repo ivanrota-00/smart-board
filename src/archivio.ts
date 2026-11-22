@@ -8,6 +8,7 @@ const CHIAVI = {
   ultimo: 'smartboard.ultimo',
   velocita: 'smartboard.velocita',
   backup: 'smartboard.ultimoBackup',
+  difesa: 'smartboard.difesa',
 } as const
 
 type Memoria = Pick<Storage, 'getItem' | 'setItem'>
@@ -102,6 +103,14 @@ export class Archivio {
   }
   set velocita(v: number | null) {
     if (v) this.scrivi(CHIAVI.velocita, String(v))
+  }
+
+  /** Difesa visibile nel player (predefinito: sì). */
+  get difesa(): boolean {
+    return this.leggi(CHIAVI.difesa) !== 'no'
+  }
+  set difesa(v: boolean) {
+    this.scrivi(CHIAVI.difesa, v ? 'si' : 'no')
   }
 
   get ultimoBackup(): Date | null {
