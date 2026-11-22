@@ -598,6 +598,17 @@ textarea {
   border-color: #e8692c;
 }
 
+.ed-quando {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.pannello-editor .ed-quando button.attivo {
+  background: #f2f2f2;
+  color: #1a1a1a;
+}
+
 .ed-casella {
   display: flex;
   align-items: center;

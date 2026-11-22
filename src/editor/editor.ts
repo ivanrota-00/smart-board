@@ -196,16 +196,23 @@ export function montaEditor(contenitore: HTMLElement, dip: DipendenzeEditor): Co
     return p
   }
 
-  const casella = (etichetta: string, valore: boolean, disattiva: boolean, cambia: (v: boolean) => void) => {
-    const l = document.createElement('label')
-    l.className = 'ed-casella'
-    const c = document.createElement('input')
-    c.type = 'checkbox'
-    c.checked = valore
-    c.disabled = disattiva
-    c.addEventListener('change', () => cambia(c.checked))
-    l.append(c, document.createTextNode(` ${etichetta}`))
-    return l
+  /**
+   * Quando parte l'azione: due bottoni grandi "Dopo le altre" / "Insieme all'ultima".
+   * Sulla prima azione del passo non c'è scelta: parte subito (lo diciamo invece di disattivare).
+   */
+  const quando = (insiemeOra: boolean, primaAzione: boolean, cambia: (v: boolean) => void): HTMLElement => {
+    if (primaAzione) return testoP('È la prima azione del passo: parte subito.', 'ed-vuoto')
+    const d = document.createElement('div')
+    d.className = 'ed-quando'
+    const scelta = (testo: string, valore: boolean) => {
+      const b = bottone(testo, () => {
+        if (valore !== insiemeOra) cambia(valore)
+      }, valore === insiemeOra ? 'attivo' : '')
+      b.setAttribute('aria-pressed', String(valore === insiemeOra))
+      return b
+    }
+    d.append(scelta('Dopo le altre', false), scelta('Insieme all’ultima', true))
+    return d
   }
 
   function disegnaAzioni(): void {
@@ -257,8 +264,9 @@ export function montaEditor(contenitore: HTMLElement, dip: DipendenzeEditor): Co
         }
         figli.push(griglia)
         if (!haPalla && g.squadra === 'att') figli.push(testoP('Palleggio, passaggio e hand-off solo per chi ha la palla in quel momento.', 'ed-vuoto'))
+        figli.push(testoP('Quando parte?', 'ed-vuoto'))
         figli.push(
-          casella('Insieme all’azione precedente', insieme, p.azioni.length === 0, (v) => {
+          quando(insieme, p.azioni.length === 0, (v) => {
             insieme = v
             disegna()
           }),
@@ -298,9 +306,8 @@ export function montaEditor(contenitore: HTMLElement, dip: DipendenzeEditor): Co
         }
         figli.push(testoP(descriviAzione(schema!, a), 'ed-titoletto'))
         if (eMovimento(a)) figli.push(testoP('Trascina i cerchi gialli sul campo per correggere il percorso.', 'ed-vuoto'))
-        figli.push(
-          casella('Insieme all’azione precedente', eInsieme(p, i), i === 0, (v) => applica(impostaInsieme(schema!, p.id, i, v))),
-        )
+        figli.push(testoP('Quando parte?', 'ed-vuoto'))
+        figli.push(quando(eInsieme(p, i), i === 0, (v) => applica(impostaInsieme(schema!, p.id, i, v))))
         figli.push(
           riga(
             bottone('🗑 Elimina azione', () => {

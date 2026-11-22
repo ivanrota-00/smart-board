@@ -342,6 +342,7 @@ Non passare alla Fase 2 finché non te lo dico.
   - Tocca un giocatore → menu (attaccante: Taglio, Palleggio, Blocco, Passaggio, Hand-off, Spostamento; difensore: Spostamento). Palleggio/passaggio/hand-off solo se ha la palla in quel momento
   - Percorso: tocchi sul campo uno dopo l'altro (anteprima gialla), "✓ Fine percorso", "↩ Togli punto"; toccare un giocatore mentre disegni mette un punto lì. Passaggio/hand-off: tocca chi riceve
   - Tocca una freccia (o la riga nell'elenco "Azioni del passo") → maniglie gialle da trascinare, "Insieme all'azione precedente", "🗑 Elimina azione"
+  - "Quando parte?": due bottoni grandi **Dopo le altre / Insieme all'ultima** (prima era una casella piccola, che sulla prima azione del passo era disattivata senza spiegazione → segnalato da Ivan; ora sulla prima azione c'è scritto "parte subito")
   - Tempi automatici: durata dalla lunghezza (taglio 4,2 m/s, palleggio 3,4, blocco 3,2, spostamento 3,8; passaggio 0,5–1,1 s; hand-off 0,5 s); "dopo" = quando finisce tutto il resto, "insieme" = parte con l'ultima azione
   - Logica in `src/editor/azioni.ts` (10 test). Giocatori: nuova modalità "tocco" + anello giallo di selezione; frecce: si possono toccare ed evidenziare
   - ✅ verificato: 82 test; build; **tocchi simulati in WebKit**: taglio a 2 punti, passaggio 1 → 3, selezione freccia con maniglie, uscita e salto a fine passo (2 sotto canestro, palla al 3). Trovato e corretto: l'elenco passi spariva quando il pannello diventava lungo
@@ -419,6 +420,7 @@ Non passare alla Fase 2 finché non te lo dico.
 
 ## 13. Changelog
 
+- **22/11/2026 — Fix 10b:** "Insieme all'azione precedente" sostituita da due bottoni grandi; spiegazione sulla prima azione del passo.
 - **22/11/2026 — Fase 10b:** disegno delle azioni a tocchi, maniglie, tempi automatici. 82 test.
 - **21/11/2026 — Fase 10a:** editor base su iPad (nuovo schema, modifica/copia, passi, testi, posizioni iniziali, annulla/ripeti). 72 test.
 - **21/11/2026 — Fase 9 chiusa:** verificata da Ivan su iPhone e Android.
